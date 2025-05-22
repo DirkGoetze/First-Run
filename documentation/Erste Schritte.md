@@ -126,21 +126,55 @@ apt install sudo curl nmap htop net-tools
 
 ## Aufgabe 4: Tastatur-Layout anpassen
 
-**Ziel:**  
 Das Tastatur-Layout auf Ihre Sprache/Herkunft einstellen.
 
-**Vorgehen:**
-1. Führen Sie aus:
-   ```bash
-   dpkg-reconfigure locales
-   ```
+Passen Sie nach der Installation das Tastatur-Layout an Ihre Sprache und Ihr Land an. So stellen Sie sicher, dass alle Zeichen auf Ihrer Tastatur wie erwartet funktionieren und Sie komfortabel arbeiten können.
+
+Gerade bei Servern und Containern, die aus internationalen Images erstellt werden, ist oft ein englisches oder anderes Standard-Layout eingestellt. Das führt dazu, dass Sonderzeichen, Umlaute oder wichtige Tasten wie Z und Y vertauscht sind. Das kann die Eingabe von Passwörtern, Befehlen oder Konfigurationsdateien erschweren und zu Fehlern führen.
+
+Ein korrekt eingestelltes Tastatur-Layout hilft, Tippfehler bei Passwörtern und wichtigen Systembefehlen zu vermeiden. Das reduziert das Risiko, versehentlich falsche oder unsichere Einstellungen vorzunehmen. Außerdem wird verhindert, dass durch falsche Eingaben Sicherheitsmechanismen wie Fail2ban unnötig ausgelöst werden, weil Passwörter falsch eingegeben wurden.
+
+Sie sollten das Tastatur-Layout und die Zeichencodierung (Locale) immer passend zu Ihrer Sprache und Ihrem Standort auswählen. Für deutschsprachige Nutzer empfiehlt es sich, mindestens folgende Layouts und Locales zu installieren:
+
+- **de_DE.UTF-8** (Deutsch, Deutschland, UTF-8)
+- **en_GB.UTF-8** (Englisch, Großbritannien, UTF-8)
+- **en_US.UTF-8** (Englisch, USA, UTF-8)
+
+- **UTF-8** ist der aktuelle Standard für die Zeichencodierung und unterstützt alle wichtigen Sonderzeichen, Umlaute und internationale Zeichen. Damit vermeiden Sie Probleme bei der Anzeige und Eingabe von Texten, insbesondere bei Umlauten und Sonderzeichen.
+- **de_DE.UTF-8** sorgt dafür, dass alle deutschen Sonderzeichen (ä, ö, ü, ß) korrekt funktionieren und Datums-/Zeitangaben sowie Sortierungen nach deutschen Standards erfolgen.
+- **en_GB.UTF-8** und **en_US.UTF-8** sind hilfreich, wenn Sie gelegentlich englische Software nutzen oder Skripte aus internationalen Quellen verwenden. Viele Programme und Fehlermeldungen sind auf Englisch, daher ist eine englische Locale oft praktisch.
+- Die Auswahl mehrerer Layouts ermöglicht es Ihnen, flexibel zwischen verschiedenen Sprachen und Tastaturbelegungen zu wechseln, falls Sie z.B. mit internationalen Teams arbeiten oder englische Tastaturen verwenden.
+
+**Empfehlung:**  
+Installieren Sie alle drei oben genannten Locales und wählen Sie **de_DE.UTF-8** als Standard aus, wenn Sie hauptsächlich auf Deutsch arbeiten. So stellen Sie sicher, dass Ihr System optimal für deutschsprachige Nutzer eingerichtet ist, aber auch internationale Kompatibilität gewährleistet bleibt.
+
+**So gehen Sie vor:**  
+Beim Ausführen von  
+```bash
+dpkg-reconfigure locales
+```
+wählen Sie die gewünschten Locales (z.B. mit der Leertaste) aus und setzen Sie **de_DE.UTF-8** als Standard.  
+Für das Tastatur-Layout empfiehlt sich bei deutschen Tastaturen die Auswahl von **"German" (de)**.
+
+**Zusammengefasst:**  
+Mit dieser Auswahl vermeiden Sie Darstellungsprobleme, Tippfehler und stellen sicher, dass Ihr System sowohl für deutschsprachige als auch internationale Anwendungen optimal funktioniert.
+
+**Erklärung des Befehls:**
+
+- `dpkg-reconfigure locales`  
+  Mit diesem Befehl können Sie die Spracheinstellungen und das Tastatur-Layout Ihres Systems anpassen. Folgen Sie dem Dialog, um die gewünschte Sprache und das passende Layout auszuwählen. Nach Abschluss werden die Einstellungen übernommen und stehen sofort zur Verfügung.
 
 ---
 
 ## Aufgabe 5: Zeitzone und Zeitserver konfigurieren
 
-**Ziel:**  
 Die richtige Zeitzone setzen und Zeit-Synchronisation aktivieren.
+
+Stellen Sie nach der Installation immer die korrekte Zeitzone ein und sorgen Sie dafür, dass die Systemzeit automatisch mit einem Zeitserver synchronisiert wird. So vermeiden Sie Zeitabweichungen und stellen sicher, dass alle Protokolle und geplanten Aufgaben mit der richtigen Uhrzeit arbeiten.
+
+Eine falsch eingestellte Zeitzone oder eine nicht synchronisierte Systemzeit kann zu Problemen bei der Protokollierung, bei zeitgesteuerten Aufgaben (Cronjobs) und bei der Fehlersuche führen. Besonders in Netzwerken mit mehreren Servern ist es wichtig, dass alle Systeme die gleiche Zeitbasis haben, damit Logdateien und Ereignisse korrekt zugeordnet werden können.
+
+Eine korrekte und synchronisierte Systemzeit ist für die Sicherheit unerlässlich. Viele sicherheitsrelevante Prozesse, wie z.B. Authentifizierungen, Ablaufzeiten von Zertifikaten oder die Analyse von Angriffen in Logdateien, sind auf eine exakte Zeitangabe angewiesen. Zeitabweichungen können dazu führen, dass Angriffe nicht erkannt oder falsch interpretiert werden. Mit einer synchronisierten Zeitbasis erhöhen Sie die Nachvollziehbarkeit und Integrität Ihrer Systemprotokolle.
 
 **Vorgehen:**
 1. Zeitzone setzen:
@@ -152,30 +186,64 @@ Die richtige Zeitzone setzen und Zeit-Synchronisation aktivieren.
    apt install ntp
    ```
 
+**Erklärung der Befehle:**
+
+- `timedatectl set-timezone Europe/Berlin`  
+  Mit diesem Befehl stellen Sie die Zeitzone Ihres Systems auf „Europe/Berlin“ ein. Sie können auch eine andere Zeitzone wählen, die zu Ihrem Standort passt. Die richtige Zeitzone sorgt dafür, dass alle Zeitangaben im System und in den Logdateien korrekt sind.
+
+- `apt install ntp`  
+  Mit diesem Befehl installieren Sie das Programm NTP (Network Time Protocol). NTP sorgt normalerweise dafür, dass Ihr System die Uhrzeit regelmäßig mit einem Zeitserver im Internet abgleicht und so immer die exakte Zeit verwendet. In vielen LXC-Containern ist dieser Dienst jedoch nicht notwendig oder funktioniert nicht wie gewohnt, da die Systemzeit automatisch vom Proxmox-Host übernommen wird. In den meisten Fällen reicht es daher aus, die Zeitzone korrekt einzustellen – die Zeit selbst wird automatisch synchronisiert.
+
 ---
 
 ## Aufgabe 6: Administrativen Benutzer anlegen
 
-**Ziel:**  
 Einen neuen Benutzer mit sudo-Rechten anlegen.
+
+Legen Sie nach der Installation immer einen eigenen administrativen Benutzer an, der über sudo-Rechte verfügt. So müssen Sie nicht dauerhaft als root arbeiten und können die Systemverwaltung sicherer gestalten.
+
+Die Arbeit mit einem eigenen Benutzerkonto ist sicherer und übersichtlicher als die ständige Nutzung des root-Kontos. Mit sudo können Sie gezielt einzelne Befehle mit Administratorrechten ausführen, ohne sich komplett als root anzumelden. Das reduziert das Risiko von unbeabsichtigten Änderungen am System und erleichtert die Nachvollziehbarkeit von Aktionen.
+
+Durch die Nutzung eines Benutzers mit sudo-Rechten statt des root-Kontos wird die Angriffsfläche für Schadsoftware und Angreifer verringert. Viele Angriffe zielen speziell auf das root-Konto ab. Mit sudo können Sie außerdem den Zugriff besser kontrollieren und protokollieren, da alle Aktionen mit erhöhten Rechten nachvollziehbar sind.
 
 **Vorgehen:**
 1. Benutzer anlegen:
    ```bash
    adduser <benutzername>
    ```
-2. Zur Gruppe sudo hinzufügen:
+2. Passwort für den Benutzer setzen (falls nicht schon im ersten Schritt geschehen):
+   ```bash
+   passwd <benutzername>
+   ```
+   Sie werden zur Eingabe und Bestätigung des neuen Passworts aufgefordert.
+3. Zur Gruppe 'sudo' hinzufügen:
    ```bash
    usermod -aG sudo <benutzername>
    ```
+
+**Erklärung der Befehle:**
+
+- `adduser <benutzername>`  
+  Legt einen neuen Benutzer an und fragt interaktiv nach Passwort und weiteren Informationen wie vollständiger Name, Telefonnummer usw.
+
+- `passwd <benutzername>`  
+  Setzt oder ändert das Passwort für den angegebenen Benutzer. Dies ist nützlich, falls Sie das Passwort nachträglich ändern möchten.
+
+- `usermod -aG sudo <benutzername>`  
+  Fügt den neuen Benutzer zur Gruppe `sudo` hinzu. Mitglieder dieser Gruppe dürfen mit dem Befehl `sudo` administrative Aufgaben ausführen.
 
 ---
 
 ## Aufgabe 7: Hostname setzen
 
-**Ziel:**  
 Einen eindeutigen Hostnamen vergeben.
 
+Vergeben Sie nach der Installation immer einen eindeutigen und aussagekräftigen Hostnamen für Ihren Container. So behalten Sie auch bei mehreren Systemen stets den Überblick und vermeiden Verwechslungen, besonders in Netzwerken mit vielen Geräten.
+
+Ein klarer Hostname hilft Ihnen und anderen Administratoren, das System schnell zu identifizieren – zum Beispiel bei der Anmeldung per SSH, in Monitoring-Tools oder bei der Fehlersuche. Ohne einen passenden Hostnamen kann es leicht zu Verwirrungen kommen, wenn mehrere Systeme denselben Standardnamen tragen oder nicht eindeutig benannt sind.
+
+Ein eindeutiger Hostname trägt zur Sicherheit bei, weil er Manipulationen und Angriffe erschwert, die auf Verwechslungen oder gezielte Täuschung setzen. Außerdem erleichtert er die Protokollierung und Überwachung, da Sie in Logdateien und Netzwerkübersichten sofort erkennen, welches System gemeint ist. So können Sie schneller auf sicherheitsrelevante Ereignisse reagieren und Fehlerquellen gezielt eingrenzen.
+  
 **Vorgehen:**
 1. Hostname setzen:
    ```bash
@@ -186,73 +254,224 @@ Einen eindeutigen Hostnamen vergeben.
    127.0.1.1   <neuer-hostname>
    ```
 
+**Erklärung der Befehle:**
+
+- `hostnamectl set-hostname <neuer-hostname>`  
+  Mit diesem Befehl setzen Sie den neuen Hostnamen für Ihr System. Der Hostname wird sofort übernommen und bleibt auch nach einem Neustart erhalten.
+
+- Anpassung der Datei `/etc/hosts`:  
+  In dieser Datei ordnen Sie die lokale IP-Adresse (meist `127.0.1.1`) dem neuen Hostnamen zu. Das ist wichtig, damit Programme und Dienste den Hostnamen korrekt auflösen können.  
+  Beispiel:
+  ```
+  127.0.1.1   <neuer-hostname>
+  ```
+
+
 ---
 
 ## Aufgabe 8: SSH-Login absichern
 
-**Ziel:**  
-SSH-Zugang härten (z.B. nur Schlüssel, root-Login verbieten).
+Den SSH-Zugang absichern, indem Sie die Anmeldung auf sichere Methoden beschränken und unnötige Risiken wie Passwort-Login oder root-Login vermeiden.
 
-**Vorgehen:**
-1. SSH-Key für den Benutzer generieren:
+Es wird empfohlen, den SSH-Zugang so zu konfigurieren, dass sich nur bestimmte Benutzer mit einem SSH-Schlüssel anmelden dürfen. Die Anmeldung mit Passwort sollte deaktiviert und der direkte root-Login verboten werden. So schützen Sie Ihren Container vor unbefugtem Zugriff und automatisierten Angriffen.
+
+Viele Angreifer versuchen, sich mit automatisierten Programmen per Passwort auf Server einzuloggen (Brute-Force-Angriffe). Wenn Sie die Anmeldung per Passwort abschalten und nur noch den Zugang mit einem privaten Schlüssel erlauben, wird ein Angriff deutlich erschwert. Der root-Login sollte deaktiviert werden, weil ein erfolgreicher Angriff auf root sofort vollen Zugriff auf das System ermöglicht.
+
+Mit diesen Einstellungen verhindern Sie, dass Unbefugte durch einfaches Ausprobieren von Passwörtern Zugriff erhalten. Nur wer im Besitz des passenden privaten Schlüssels ist und als erlaubter Benutzer eingetragen wurde, kann sich anmelden. Das macht Ihr System deutlich sicherer und schützt vor den meisten automatisierten Angriffen auf SSH.
+
+**Vorgehen (Beispiel):**
+
+1. **SSH-Schlüssel für den Benutzer generieren:**
    ```bash
-   su - <benutzername>
+   su - max
    ssh-keygen -b 4096
    ```
-2. Public-Key in `~/.ssh/authorized_keys` eintragen.
-3. In `/etc/ssh/sshd_config` folgende Einstellungen setzen:
+   Folgen Sie dem Dialog und drücken Sie Enter, um den Schlüssel im Standardpfad zu speichern.
+
+2. **Öffentlichen Schlüssel eintragen:**
+   ```bash
+   cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
+   chmod 600 ~/.ssh/authorized_keys
+   ```
+   Damit kann sich nur noch jemand mit dem passenden privaten Schlüssel anmelden.
+
+3. **SSH-Konfiguration anpassen:**  
+   Öffnen Sie `/etc/ssh/sshd_config` und setzen Sie folgende Werte:
    ```
    PermitRootLogin without-password
    PasswordAuthentication no
    PubkeyAuthentication yes
-   AllowUsers <benutzername>
+   AllowUsers max
    ```
-4. SSH-Dienst neu starten:
+   - `PermitRootLogin without-password`: Root-Login ist nur mit Schlüssel, nicht mit Passwort möglich.
+   - `PasswordAuthentication no`: Anmeldung mit Passwort ist komplett deaktiviert.
+   - `PubkeyAuthentication yes`: Anmeldung mit SSH-Schlüssel ist erlaubt.
+   - `AllowUsers max`: Nur der Benutzer `max` darf sich per SSH anmelden.
+
+4. **SSH-Dienst neu starten:**
    ```bash
    systemctl restart sshd
    ```
+
+**Erklärung der Befehle:**
+
+- `su - <benutzername>`  
+  Wechselt zum gewünschten Benutzer, für den der SSH-Schlüssel erstellt werden soll.
+
+- `ssh-keygen -b 4096`  
+  Erstellt ein neues Schlüsselpaar (privat/öffentlich) mit einer Schlüssellänge von 4096 Bit.
+
+- `cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys`  
+  Fügt den öffentlichen Schlüssel zur Liste der erlaubten Schlüssel hinzu.
+
+- `chmod 600 ~/.ssh/authorized_keys`  
+  Setzt die richtigen Berechtigungen für die Datei, damit nur der Benutzer darauf zugreifen kann.
+
+- Einstellungen in `/etc/ssh/sshd_config`  
+  Hier werden die Zugriffsregeln für SSH gesetzt (siehe oben).
+
+- `systemctl restart sshd`  
+  Startet den SSH-Dienst neu, damit die Änderungen wirksam werden.
+
+**SSH-Schlüssel auslesen:**  
+Um den privaten Schlüssel anzuzeigen (z.B. um ihn auf einen anderen Rechner zu kopieren), können Sie folgenden Befehl nutzen:
+```bash
+cat ~/.ssh/id_rsa
+```
+**Achtung:** Der private Schlüssel ist geheim und darf niemals weitergegeben oder veröffentlicht werden!
+
+**Zusätzliche Optionen für noch mehr Sicherheit:**
+
+- **TimeOut:**  
+  Sie können die SSH-Sitzung automatisch beenden lassen, wenn keine Aktivität erfolgt. Dazu in `/etc/ssh/sshd_config`:
+  ```
+  ClientAliveInterval 300
+  ClientAliveCountMax 2
+  ```
+  Damit wird die Verbindung nach 10 Minuten Inaktivität getrennt.
+
+- **AllowUsers:**  
+  Mit `AllowUsers <benutzername>` können Sie den SSH-Zugang auf bestimmte Benutzer beschränken. Nur diese dürfen sich dann anmelden.
+
+Mit diesen Maßnahmen ist Ihr SSH-Zugang optimal gegen die meisten Angriffsarten geschützt.
 
 ---
 
 ## Aufgabe 9: Firewall einrichten
 
-**Ziel:**  
-Nur benötigte Ports öffnen.
+Server kommunizieren über sogenannte Ports. Jeder offene Port ist eine potenzielle Schwachstelle, über die Angreifer ins System eindringen könnten. Viele Angriffe nutzen gezielt offene, aber nicht benötigte Ports aus. Mit einer Firewall können Sie gezielt steuern, welcher Datenverkehr erlaubt ist und welcher blockiert wird.
 
-**Vorgehen:**
-1. Firewall installieren:
+Ports sind wie Türen am Computer, über die Programme mit dem Internet oder anderen Geräten kommunizieren. Jeder Dienst (z.B. Webseiten, E-Mail, Fernzugriff) nutzt einen bestimmten Port. Wenn ein Port offen ist, kann von außen auf diesen Dienst zugegriffen werden. Mit einer Firewall können Sie steuern, welche dieser "Türen" offen oder geschlossen sind.
+
+Es wird empfohlen, direkt nach der Installation eine Firewall zu aktivieren und nur die Ports zu öffnen, die für Ihre Anwendungen und Dienste wirklich notwendig sind. So verhindern Sie, dass ungenutzte oder unsichere Dienste von außen erreichbar sind.
+
+Durch das Schließen aller nicht benötigten Ports und das gezielte Freigeben nur der wirklich notwendigen Dienste wird die Angriffsfläche Ihres Systems deutlich reduziert. So schützen Sie Ihren Container effektiv vor unbefugtem Zugriff und automatisierten Angriffen aus dem Internet.
+
+**Vorgehen (Beispiel):**
+
+1. **Firewall installieren:**
    ```bash
    apt install ufw
    ```
-2. Standardregeln setzen:
+   Installiert das Programm UFW („Uncomplicated Firewall“), das die Verwaltung der Firewall-Regeln vereinfacht.
+
+2. **Standardregeln setzen:**
    ```bash
    ufw default deny incoming
    ufw default allow outgoing
    ```
-3. Benötigte Ports öffnen, z.B.:
+   Blockiert standardmäßig alle eingehenden Verbindungen und erlaubt alle ausgehenden Verbindungen.
+
+3. **Benötigte Ports öffnen (Beispiele):**
    ```bash
-   ufw allow 22/tcp
-   ufw allow 80/tcp
-   ufw allow 443/tcp
+   ufw allow 22/tcp    # SSH
+   ufw allow 80/tcp    # HTTP (Webserver)
+   ufw allow 443/tcp   # HTTPS (Webserver)
    ```
-4. Firewall aktivieren:
+   Öffnet gezielt die Ports für Dienste, die von außen erreichbar sein sollen.
+
+4. **Firewall aktivieren:**
    ```bash
    ufw enable
    ```
+   Schaltet die Firewall scharf und aktiviert die Regeln.
+
+**Erklärung der Befehle:**
+
+- `apt install ufw`  
+  Installiert die Firewall-Software UFW auf Ihrem System.
+
+- `ufw default deny incoming`  
+  Blockiert alle eingehenden Verbindungen, die nicht explizit erlaubt wurden.
+
+- `ufw default allow outgoing`  
+  Erlaubt alle ausgehenden Verbindungen vom System ins Internet.
+
+- `ufw allow 22/tcp`  
+  Öffnet den Port 22 für SSH-Verbindungen.
+
+- `ufw allow 80/tcp`  
+  Öffnet den Port 80 für HTTP (Webseiten).
+
+- `ufw allow 443/tcp`  
+  Öffnet den Port 443 für HTTPS (verschlüsselte Webseiten).
+
+- `ufw enable`  
+  Aktiviert die Firewall und setzt alle definierten Regeln in Kraft.
+
+**Zusätzliche Optionen für noch mehr Sicherheit:**
+
+- **Nur bestimmte IPs erlauben:**  
+  Sie können Zugriffe auf bestimmte Ports auf einzelne IP-Adressen beschränken, z.B.:
+  ```bash
+  ufw allow from 192.168.1.100 to any port 22 proto tcp
+  ```
+  Nur die IP 192.168.1.100 darf sich per SSH verbinden.
+
+- **Firewall-Status anzeigen:**  
+  Mit
+  ```bash
+  ufw status verbose
+  ```
+  sehen Sie alle aktiven Regeln und können prüfen, ob alles wie gewünscht eingestellt ist.
+
+- **Firewall beim Systemstart aktivieren:**  
+  UFW ist nach der Aktivierung automatisch beim Systemstart aktiv. Sie können dies mit
+  ```bash
+  systemctl enable ufw
+  ```
+  sicherstellen.
+
+- **Logging aktivieren:**  
+  Um verdächtigen Traffic zu protokollieren:
+  ```bash
+  ufw logging on
+  ```
+
+Mit diesen zusätzlichen Einstellungen können Sie Ihre Firewall noch gezielter konfigurieren und Ihr System optimal absichern.
 
 ---
 
 ## Aufgabe 10: Login absichern (Fail2ban)
 
-**Ziel:**  
-Schutz vor Brute-Force-Angriffen.
+Den Login gegen Brute-Force-Angriffe absichern, indem wiederholt fehlgeschlagene Anmeldeversuche automatisch zur Sperrung der betreffenden IP-Adresse führen.
 
-**Vorgehen:**
-1. Fail2ban installieren:
+Es wird empfohlen, direkt nach der Einrichtung des Systems einen Schutz wie Fail2ban zu aktivieren. Fail2ban überwacht die Login-Versuche (z.B. per SSH) und sperrt automatisch IP-Adressen, von denen zu viele fehlgeschlagene Anmeldeversuche kommen. So schützen Sie Ihr System vor automatisierten Angriffen, bei denen Passwörter durch Ausprobieren erraten werden sollen.
+
+Gerade Server, die aus dem Internet erreichbar sind, werden häufig Ziel von Brute-Force-Angriffen. Angreifer versuchen dabei, durch automatisiertes Ausprobieren von Passwörtern Zugriff zu erhalten. Ohne Schutzmechanismen könnten sie beliebig viele Versuche starten. Mit Fail2ban wird nach einer festgelegten Anzahl von Fehlversuchen die IP-Adresse für eine bestimmte Zeit gesperrt. Das macht solche Angriffe praktisch wirkungslos.
+
+Durch die automatische Sperrung verdächtiger IP-Adressen wird Ihr System effektiv vor unbefugtem Zugriff geschützt. Angreifer werden ausgebremst und können nicht beliebig viele Passwörter ausprobieren. So bleibt Ihr System auch bei ständiger Erreichbarkeit im Internet sicherer.
+
+**Vorgehen (Beispiel):**
+
+1. **Fail2ban installieren:**
    ```bash
    apt install fail2ban
    ```
-2. Konfiguration anpassen, z.B. `/etc/fail2ban/jail.local`:
+   Installiert das Schutzprogramm.
+
+2. **Konfiguration anpassen:**  
+   Öffnen Sie z.B. die Datei `/etc/fail2ban/jail.local` und fügen Sie folgende Einstellungen für den SSH-Dienst ein:
    ```
    [sshd]
    enabled = true
@@ -260,22 +479,98 @@ Schutz vor Brute-Force-Angriffen.
    bantime = 6h
    findtime = 7d
    ```
+   - `enabled = true`: Aktiviert den Schutz für SSH.
+   - `maxretry = 3`: Nach 3 Fehlversuchen wird die IP gesperrt.
+   - `bantime = 6h`: Die Sperre dauert 6 Stunden.
+   - `findtime = 7d`: Die Fehlversuche werden über 7 Tage gezählt.
+
+3. **Fail2ban neu starten, damit die Einstellungen aktiv werden:**
+   ```bash
+   systemctl restart fail2ban
+   ```
+
+**Erklärung der Befehle:**
+
+- `apt install fail2ban`  
+  Installiert das Programm Fail2ban, das Logdateien überwacht und bei zu vielen Fehlversuchen IP-Adressen sperrt.
+
+- Konfiguration in `/etc/fail2ban/jail.local`  
+  Hier legen Sie fest, wie viele Fehlversuche erlaubt sind, wie lange eine IP gesperrt wird und für welche Dienste der Schutz gilt.
+
+- `systemctl restart fail2ban`  
+  Startet den Dienst neu, damit die neuen Einstellungen übernommen werden.
+
+**Zusätzliche Optionen für noch mehr Sicherheit:**
+
+- **Benachrichtigung per E-Mail:**  
+  Sie können Fail2ban so konfigurieren, dass Sie bei einer Sperrung eine E-Mail erhalten. Dazu die Option `action = %(action_mwl)s` in der Konfiguration setzen.
+
+- **Whitelist für eigene IPs:**  
+  Mit der Option `ignoreip = 127.0.0.1/8 ::1 <eigene-IP>` können Sie eigene oder vertrauenswürdige IPs von der Sperre ausnehmen.
+
+- **Weitere Dienste schützen:**  
+  Fail2ban kann nicht nur SSH, sondern auch andere Dienste wie Webserver, Mailserver oder FTP absichern. Dazu einfach weitere Abschnitte in der Konfiguration anlegen, z.B. `[apache-auth]`.
+
+- **Sperrdauer und Fehlversuche anpassen:**  
+  Sie können die Werte für `bantime` und `maxretry` individuell anpassen, um den Schutz noch strenger oder lockerer zu gestalten.
+
+Mit diesen Einstellungen und Optionen machen Sie Ihr System deutlich widerstandsfähiger gegen automatisierte Angriffe und erhöhen die Sicherheit Ihrer Server-Logins spürbar.
 
 ---
 
 ## Aufgabe 11: DDoS-Schutz aktivieren
 
-**Ziel:**  
-Netzwerkregeln gegen DDoS-Angriffe setzen.
+DDoS-Schutz aktivieren, um den Server vor massenhaften Anfragen und Verbindungsversuchen zu schützen.
 
-**Vorgehen:**
-1. Diverse iptables-Regeln setzen (siehe [iptables DDoS Schutz](https://wiki.ubuntuusers.de/iptables/)).
-2. Beispiel:
+Es wird empfohlen, direkt nach der Einrichtung des Systems spezielle Netzwerkregeln gegen DDoS-Angriffe (Distributed Denial of Service) zu setzen. So verhindern Sie, dass Ihr Server durch zu viele gleichzeitige Anfragen oder Verbindungsversuche überlastet und dadurch nicht mehr erreichbar wird.
+
+DDoS-Angriffe sind eine häufige Methode, um Server gezielt lahmzulegen. Dabei senden viele Rechner gleichzeitig eine große Menge an Daten oder Verbindungsanfragen an Ihr System. Ohne Schutzmechanismen kann Ihr Server dadurch überlastet werden und Dienste stehen nicht mehr zur Verfügung. Mit gezielten Regeln können Sie solche Angriffe frühzeitig erkennen und abwehren.
+
+Durch das Setzen von Limits für Verbindungen und das Blockieren verdächtiger oder ungewöhnlicher Netzwerkpakete wird Ihr System widerstandsfähiger gegen Überlastungsangriffe. So bleibt Ihr Server auch bei Angriffen aus dem Internet erreichbar und wichtige Dienste werden geschützt.
+
+**Vorgehen (Beispiel):**
+
+1. **iptables-Regeln setzen:**  
+   Sie können mit iptables bestimmte Netzwerkregeln einrichten, die z.B. die Anzahl der Verbindungen pro Sekunde begrenzen:
    ```bash
    iptables -A INPUT -p udp -m limit --limit 150/s -j ACCEPT
    iptables -A INPUT -p udp -j DROP
-   # Weitere Regeln nach Bedarf
    ```
+   Damit werden maximal 150 UDP-Pakete pro Sekunde akzeptiert, alles darüber wird verworfen.
+
+2. **Weitere Regeln nach Bedarf:**  
+   Sie können zusätzliche Regeln für andere Protokolle oder Ports hinzufügen, um den Schutz weiter zu erhöhen.
+
+**Erklärung der Befehle:**
+
+- `iptables -A INPUT -p udp -m limit --limit 150/s -j ACCEPT`  
+  Erlaubt maximal 150 UDP-Pakete pro Sekunde. Alles, was darüber hinausgeht, wird blockiert.
+
+- `iptables -A INPUT -p udp -j DROP`  
+  Verwirft alle weiteren UDP-Pakete, die das Limit überschreiten.
+
+**Zusätzliche Optionen für noch mehr Sicherheit:**
+
+- **Limits für andere Protokolle setzen:**  
+  Sie können ähnliche Regeln auch für TCP oder bestimmte Ports anwenden, z.B.:
+  ```bash
+  iptables -A INPUT -p tcp --syn -m limit --limit 30/s -j ACCEPT
+  iptables -A INPUT -p tcp --syn -j DROP
+  ```
+
+- **Ungültige oder verdächtige Pakete blockieren:**  
+  Blockieren Sie Pakete mit ungewöhnlichen Flags oder von verdächtigen Quellen.
+
+- **Kernel-Schutzmechanismen aktivieren:**  
+  Aktivieren Sie zusätzliche Schutzfunktionen im Kernel, z.B. SYN-Cookies:
+  ```bash
+  sysctl -w net.ipv4.tcp_syncookies=1
+  ```
+
+- **Monitoring und Logging:**  
+  Überwachen Sie die Netzwerkaktivität und protokollieren Sie verdächtige Zugriffe, um Angriffe frühzeitig zu erkennen.
+
+Mit diesen Maßnahmen erhöhen Sie die Widerstandsfähigkeit Ihres Systems gegen DDoS-Angriffe und sorgen dafür, dass Ihr Server auch unter hoher Last erreichbar bleibt.
 
 ---
 
