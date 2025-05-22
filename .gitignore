@@ -1,1 +1,16 @@
 {\rtf1}
+# Log Dateien ignorieren
+*.log
+
+# Temporäre Dateien ignorieren
+*~
+*.swp
+*.tmp
+
+# Editor und IDE spezifische Dateien ignorieren
+.vscode/
+.idea/
+
+# Betriebssystem spezifische Dateien ignorieren
+.DS_Store
+Thumbs.db

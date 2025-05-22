@@ -30,37 +30,21 @@ muss installiert sein (wird jedoch bei Bedarf automatisch nach installiert).
    cd ~
    ```
 
-3. **Lade das Skript als ZIP-Datei von GitHub herunter:**  
-   Ersetze `<USER>` und `<REPOSITORY>` durch die passenden Namen.
+3. **Lade das Skript von GitHub herunter:**  
    ```bash
-   wget https://github.com/<USER>/<REPOSITORY>/archive/refs/heads/main.zip
+   wget https://github.com/DirkGoetze/First-Run/main/first-run.sh
    ```
 
-4. **Entpacke die ZIP-Datei:**
-   ```bash
-   unzip main.zip
-   ```
-
-   *Falls das Programm `unzip` nicht installiert ist, kannst du es nachinstallieren:*
-   ```bash
-   sudo apt update && sudo apt install unzip
-   ```
-
-5. **Wechsle in das entpackte Verzeichnis:**
-   ```bash
-   cd <REPOSITORY>-main
-   ```
-
-6. **Mache das Skript ausführbar:**
+4. **Mache das Skript ausführbar:**
    ```bash
    chmod +x first-run.sh
    ```
 
-7. **Starte das Skript mit Root-Rechten:**
+5. **Starte das Skript mit Root-Rechten:**
    ```bash
    sudo ./first-run.sh
    ```
 
 **Hinweis:**  
 Das Skript benötigt Root-Rechte.  
-Folge den Anweisungen im Dialog-Menü, um die Einrichtung abzuschließen.
+Folge anschliessend den Anweisungen im Dialog-Menü, um die Ersteinrichtung abzuschließen.
