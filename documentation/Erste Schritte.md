@@ -4,6 +4,33 @@
 
 Nach der Installation eines neuen LXC-Containers ist es wichtig, das System sicher, aktuell und produktiv zu konfigurieren. In diesem Kapitel werden alle notwendigen Aufgaben beschrieben, die Sie **manuell** durchführen sollten, um Ihren Container optimal einzurichten und abzusichern.
 
+<!-- Inhaltsverzeichnis -->
+## Inhaltsverzeichnis
+
+- [Einleitung](#einleitung)
+- [Aufgabe 1: Systemupdate durchführen](#aufgabe-1-systemupdate-durchführen)
+- [Aufgabe 2: Automatische Updates einrichten](#aufgabe-2-automatische-updates-einrichten)
+- [Aufgabe 3: Empfohlene Software installieren](#aufgabe-3-empfohlene-software-installieren)
+- [Aufgabe 4: Tastatur-Layout anpassen](#aufgabe-4-tastatur-layout-anpassen)
+- [Aufgabe 5: Zeitzone und Zeitserver konfigurieren](#aufgabe-5-zeitzone-und-zeitserver-konfigurieren)
+- [Aufgabe 6: Administrativen Benutzer anlegen](#aufgabe-6-administrativen-benutzer-anlegen)
+- [Aufgabe 7: Hostname setzen](#aufgabe-7-hostname-setzen)
+- [Aufgabe 8: SSH-Login absichern](#aufgabe-8-ssh-login-absichern)
+- [Aufgabe 9: Firewall einrichten](#aufgabe-9-firewall-einrichten)
+- [Aufgabe 10: Login absichern (Fail2ban)](#aufgabe-10-login-absichern-fail2ban)
+- [Aufgabe 11: CrowdSec nutzen](#aufgabe-11-crowdsec-nutzen)
+- [Aufgabe 12: Zwei-Faktor-Authentifizierung (2FA) für SSH](#aufgabe-12-zwei-faktor-authentifizierung-2fa-für-ssh)
+- [Aufgabe 13: DDoS-Schutz aktivieren](#aufgabe-13-ddos-schutz-aktivieren)
+- [Aufgabe 14: IP-Spoofing-Schutz aktivieren](#aufgabe-14-ip-spoofing-schutz-aktivieren)
+- [Aufgabe 15: ARP-Spoofing-Schutz aktivieren](#aufgabe-15-arp-spoofing-schutz-aktivieren)
+- [Aufgabe 16: Automatische Überwachung und Alarmierung](#aufgabe-16-automatische-überwachung-und-alarmierung)
+- [Aufgabe 17: Regelmäßige Backups](#aufgabe-17-regelmäßige-backups)
+- [Aufgabe 18: Dateisystem- und Rechtehärtung](#aufgabe-18-dateisystem--und-rechtehärtung)
+- [Aufgabe 19: Verwendung von sicheren Protokollen](#aufgabe-19-verwendung-von-sicheren-protokollen)
+- [Aufgabe 20: Regelmäßige Überprüfung offener Ports](#aufgabe-20-regelmäßige-überprüfung-offener-ports)
+- [Aufgabe 21: Bash Prompt anpassen](#aufgabe-21-bash-prompt-anpassen)
+- [Abschluss](#abschluss)
+
 ---
 
 ## Aufgabe 1: Systemupdate durchführen
@@ -518,7 +545,153 @@ Mit diesen Einstellungen und Optionen machen Sie Ihr System deutlich widerstands
 
 ---
 
-## Aufgabe 11: DDoS-Schutz aktivieren
+## Aufgabe 11: CrowdSec nutzen
+
+CrowdSec installieren und einrichten, um Ihr System aktiv vor Angriffen aus dem Internet zu schützen.
+
+Es wird empfohlen, nach der Einrichtung des Systems CrowdSec zu installieren. CrowdSec ist ein modernes Open-Source-Sicherheitswerkzeug, das Angriffe wie Brute-Force, Port-Scans oder andere verdächtige Aktivitäten erkennt und automatisch abwehrt. Es nutzt dabei die Schwarmintelligenz vieler Nutzer: Erkennt ein CrowdSec-System einen Angreifer, werden dessen IP-Adressen mit der Community geteilt und können weltweit blockiert werden.
+
+Viele Angriffe auf Server laufen automatisiert und betreffen oft viele Systeme gleichzeitig. Während klassische Tools wie Fail2ban nur lokal reagieren, bietet CrowdSec einen zusätzlichen Schutz durch die gemeinsame Auswertung von Angriffsmustern. So profitieren Sie von den Erfahrungen anderer Nutzer und können neue Bedrohungen schneller erkennen und abwehren.
+
+Mit CrowdSec wird Ihr System nicht nur gegen bekannte Angriffe geschützt, sondern auch gegen neue, noch unbekannte Bedrohungen. Die automatische Blockierung verdächtiger IP-Adressen und die ständige Aktualisierung der Bedrohungsdatenbank machen Ihr System deutlich widerstandsfähiger gegen Angriffe aus dem Internet.
+
+**Vorgehen (Beispiel):**
+
+1. **CrowdSec installieren:**
+   ```bash
+   apt install crowdsec
+   ```
+   Installiert das Hauptprogramm.
+
+2. **Firewall-Integration aktivieren (empfohlen):**
+   ```bash
+   apt install crowdsec-firewall-bouncer-iptables
+   ```
+   Damit kann CrowdSec Angreifer direkt über die Firewall blockieren.
+
+3. **CrowdSec starten und Status prüfen:**
+   ```bash
+   systemctl enable --now crowdsec
+   systemctl status crowdsec
+   ```
+   Aktiviert CrowdSec und prüft, ob der Dienst läuft.
+
+4. **Web-Konsole (optional):**
+   Sie können die CrowdSec-Konsole nutzen, um Angriffe und Statistiken zu überwachen:
+   ```bash
+   cscli dashboard setup
+   ```
+   Folgen Sie den Anweisungen im Terminal.
+
+**Erklärung der Befehle:**
+
+- `apt install crowdsec`  
+  Installiert das Hauptprogramm CrowdSec, das Logdateien überwacht und Angriffe erkennt.
+
+- `apt install crowdsec-firewall-bouncer-iptables`  
+  Installiert das Modul, das erkannte Angreifer direkt über die Firewall blockiert.
+
+- `systemctl enable --now crowdsec`  
+  Startet CrowdSec und sorgt dafür, dass es beim Systemstart automatisch läuft.
+
+- `systemctl status crowdsec`  
+  Zeigt den aktuellen Status des CrowdSec-Dienstes an.
+
+- `cscli dashboard setup`  
+  Startet die Einrichtung der Web-Konsole zur Überwachung und Verwaltung von CrowdSec.
+
+**Zusätzliche Optionen für noch mehr Sicherheit:**
+
+- **Benachrichtigungen aktivieren:**  
+  Sie können E-Mail-Benachrichtigungen oder Slack-Integrationen einrichten, um sofort über Angriffe informiert zu werden.
+
+- **Weitere Bouncer installieren:**  
+  Neben der Firewall-Integration gibt es Bouncer für NGINX, Apache, Cloudflare und andere Dienste, um Angreifer noch gezielter zu blockieren.
+
+- **Eigene Regeln anlegen:**  
+  Sie können eigene Erkennungsregeln (Parsers und Szenarien) definieren, um spezielle Angriffe auf Ihre Anwendungen zu erkennen.
+
+- **Regelmäßige Updates:**  
+  Halten Sie CrowdSec und die Szenarien aktuell, um immer gegen neue Angriffsmuster geschützt zu sein:
+  ```bash
+  cscli collections upgrade
+  cscli scenarios upgrade
+  ```
+
+Mit diesen Maßnahmen machen Sie Ihr System fit gegen aktuelle und zukünftige Angriffe und profitieren von der weltweiten CrowdSec-Community.
+
+## Aufgabe 12: Zwei-Faktor-Authentifizierung (2FA) für SSH
+
+Die Zwei-Faktor-Authentifizierung (2FA) für den SSH-Zugang aktivieren, um den Zugriff auf den Server noch besser abzusichern.
+
+Es wird empfohlen, den SSH-Zugang zusätzlich zur normalen Passwort- oder Schlüssel-Authentifizierung mit einer zweiten Sicherheitsstufe zu schützen. Mit 2FA müssen sich Nutzer nicht nur mit ihrem Passwort oder Schlüssel anmelden, sondern zusätzlich einen Einmal-Code eingeben, der z.B. auf dem Smartphone generiert wird.
+
+Selbst wenn ein Angreifer das Passwort oder den SSH-Schlüssel eines Benutzers herausfindet, reicht das allein nicht mehr aus, um Zugriff auf den Server zu bekommen. Der zweite Faktor – meist ein zeitlich begrenzter Code – wird auf einem separaten Gerät erzeugt und ist nur kurz gültig. So wird das Risiko durch gestohlene Zugangsdaten deutlich reduziert.
+
+Mit Zwei-Faktor-Authentifizierung machen Sie es Angreifern extrem schwer, sich unbefugt Zugang zu Ihrem System zu verschaffen. Selbst bei erfolgreichen Phishing-Angriffen oder Datenlecks bleibt der Server geschützt, weil der zweite Faktor fehlt. Damit erhöhen Sie die Sicherheit Ihres Servers erheblich, besonders wenn dieser aus dem Internet erreichbar ist.
+
+**Vorgehen (Beispiel):**
+
+1. **Google Authenticator installieren:**
+   ```bash
+   apt install libpam-google-authenticator
+   ```
+   Installiert das benötigte Paket für die Zwei-Faktor-Authentifizierung.
+
+2. **Für den gewünschten Benutzer einrichten:**
+   ```bash
+   su - max
+   google-authenticator
+   ```
+   Folgen Sie dem Dialog, scannen Sie den QR-Code mit einer Authenticator-App (z.B. Google Authenticator oder FreeOTP) und notieren Sie die angezeigten Notfallcodes.
+
+3. **SSH-Konfiguration anpassen:**  
+   Öffnen Sie die Datei `/etc/pam.d/sshd` und fügen Sie am Ende folgende Zeile ein:
+   ```
+   auth required pam_google_authenticator.so
+   ```
+   Öffnen Sie dann `/etc/ssh/sshd_config` und setzen Sie:
+   ```
+   ChallengeResponseAuthentication yes
+   ```
+   Starten Sie den SSH-Dienst neu:
+   ```bash
+   systemctl restart sshd
+   ```
+
+**Erklärung der Befehle:**
+
+- `apt install libpam-google-authenticator`  
+  Installiert das Programm, das die Zwei-Faktor-Authentifizierung für SSH ermöglicht.
+
+- `google-authenticator`  
+  Startet die Einrichtung für den aktuellen Benutzer. Es wird ein QR-Code angezeigt, den Sie mit einer App auf Ihrem Smartphone scannen. Danach erhalten Sie Einmal-Codes für die Anmeldung.
+
+- Eintrag in `/etc/pam.d/sshd`  
+  Aktiviert die Abfrage des zweiten Faktors bei der SSH-Anmeldung.
+
+- Einstellung in `/etc/ssh/sshd_config`  
+  Mit `ChallengeResponseAuthentication yes` erlauben Sie die Abfrage von Einmal-Codes.
+
+- `systemctl restart sshd`  
+  Startet den SSH-Dienst neu, damit die Änderungen wirksam werden.
+
+**Zusätzliche Optionen für noch mehr Sicherheit:**
+
+- **Backup-Codes sicher aufbewahren:**  
+  Notieren Sie die Einmal-Notfallcodes, die bei der Einrichtung angezeigt werden, und bewahren Sie sie an einem sicheren Ort auf.
+
+- **2FA für mehrere Benutzer einrichten:**  
+  Wiederholen Sie die Einrichtung für alle Benutzer, die sich per SSH anmelden dürfen.
+
+- **Hardware-Token nutzen:**  
+  Alternativ können Sie mit `pam-u2f` auch einen USB-Sicherheitsschlüssel (z.B. YubiKey) als zweiten Faktor verwenden.
+
+Mit diesen Maßnahmen ist Ihr SSH-Zugang optimal gegen unbefugte Zugriffe geschützt – selbst wenn ein Passwort oder Schlüssel in falsche Hände gerät.
+
+---
+
+## Aufgabe 13: DDoS-Schutz aktivieren
 
 DDoS-Schutz aktivieren, um den Server vor massenhaften Anfragen und Verbindungsversuchen zu schützen.
 
@@ -574,13 +747,19 @@ Mit diesen Maßnahmen erhöhen Sie die Widerstandsfähigkeit Ihres Systems gegen
 
 ---
 
-## Aufgabe 12: IP-Spoofing-Schutz aktivieren
+## Aufgabe 14: IP-Spoofing-Schutz aktivieren
 
-**Ziel:**  
-Reverse Path Filtering und Kernel-Optionen setzen.
+IP-Spoofing-Schutz aktivieren, indem Sie Reverse Path Filtering und bestimmte Kernel-Optionen setzen.
 
-**Vorgehen:**
-1. In `/etc/sysctl.conf` folgende Zeilen ergänzen:
+Es wird empfohlen, den Schutz gegen IP-Spoofing direkt nach der Einrichtung des Systems zu aktivieren. So verhindern Sie, dass Angreifer gefälschte IP-Adressen nutzen, um sich unberechtigt Zugriff auf Ihr System zu verschaffen oder Angriffe zu verschleiern.
+
+IP-Spoofing bezeichnet das Fälschen von IP-Adressen in Netzwerkpaketen. Angreifer können so ihre wahre Identität verbergen oder versuchen, Sicherheitsmechanismen zu umgehen. Ohne Schutzmaßnahmen könnten solche Pakete Ihr System erreichen und Schaden anrichten. Reverse Path Filtering prüft, ob eingehende Pakete tatsächlich von der richtigen Richtung kommen, und blockiert gefälschte Pakete.
+
+Durch das Aktivieren von Reverse Path Filtering und das Setzen weiterer Kernel-Optionen wird Ihr System widerstandsfähiger gegen Angriffe, bei denen IP-Adressen gefälscht werden. So werden viele typische Angriffsversuche frühzeitig erkannt und blockiert, bevor sie Schaden anrichten können.
+
+**Vorgehen (Beispiel):**
+
+1. Öffnen Sie die Datei `/etc/sysctl.conf` und ergänzen Sie folgende Zeilen:
    ```
    net.ipv4.conf.all.rp_filter=1
    net.ipv4.conf.default.rp_filter=1
@@ -591,33 +770,191 @@ Reverse Path Filtering und Kernel-Optionen setzen.
    net.ipv4.conf.all.send_redirects=0
    net.ipv4.conf.default.send_redirects=0
    ```
-2. Einstellungen anwenden:
+   Diese Einstellungen sorgen dafür, dass gefälschte Pakete erkannt und abgewiesen werden.
+
+2. Übernehmen Sie die Einstellungen sofort mit:
    ```bash
    sysctl -p
    ```
 
+**Erklärung der Befehle:**
+
+- Einträge in `/etc/sysctl.conf`  
+  Hier werden die Kernel-Optionen dauerhaft gesetzt.  
+  - `rp_filter=1`: Aktiviert Reverse Path Filtering, prüft die Herkunft von Paketen.
+  - `accept_source_route=0`: Verhindert, dass Pakete mit manipulierten Routen akzeptiert werden.
+  - `accept_redirects=0` und `send_redirects=0`: Blockieren das Akzeptieren und Senden von Weiterleitungsanweisungen, die von Angreifern missbraucht werden könnten.
+
+- `sysctl -p`  
+  Übernimmt alle Einstellungen aus der Datei `/etc/sysctl.conf` sofort, ohne dass ein Neustart nötig ist.
+
+**Zusätzliche Optionen für noch mehr Sicherheit:**
+
+- **Weitere Kernel-Optionen setzen:**  
+  Sie können zusätzliche Einstellungen wie `net.ipv4.conf.all.log_martians=1` aktivieren, um verdächtige Pakete zu protokollieren:
+  ```bash
+  echo "net.ipv4.conf.all.log_martians=1" >> /etc/sysctl.conf
+  sysctl -p
+  ```
+
+- **Firewall-Regeln ergänzen:**  
+  Ergänzen Sie Ihre Firewall-Regeln, um Pakete mit ungültigen oder privaten Quelladressen zu blockieren.
+
+- **Regelmäßige Überprüfung:**  
+  Kontrollieren Sie regelmäßig mit `sysctl -a | grep rp_filter`, ob die Einstellungen aktiv sind.
+
+Mit diesen Maßnahmen schützen Sie Ihr System effektiv vor Angriffen, bei denen IP-Adressen gefälscht werden, und erhöhen die Netzwerksicherheit Ihres Containers deutlich.
+
 ---
 
-## Aufgabe 13: ARP-Spoofing-Schutz aktivieren
+## Aufgabe 15: ARP-Spoofing-Schutz aktivieren
 
-**Ziel:**  
-Statische ARP-Einträge für wichtige Netzwerkgeräte setzen.
+Statischen ARP-Spoofing-Schutz aktivieren, indem Sie feste ARP-Einträge für wichtige Netzwerkgeräte setzen.
 
-**Vorgehen:**
-1. MAC-Adresse und IP der Netzwerkkarte ermitteln:
+Es wird empfohlen, nach der Einrichtung des Systems statische ARP-Einträge für zentrale Netzwerkgeräte (wie Router oder wichtige Server) zu setzen. So verhindern Sie, dass Angreifer gefälschte ARP-Antworten ins Netzwerk senden und damit den Datenverkehr umleiten oder mitlesen können.
+
+Beim sogenannten ARP-Spoofing geben sich Angreifer im lokalen Netzwerk als ein anderes Gerät aus, indem sie gefälschte ARP-Antworten verschicken. Dadurch kann der Datenverkehr umgeleitet, mitgelesen oder sogar manipuliert werden. Ohne Schutzmaßnahmen ist jedes Gerät im lokalen Netz potenziell angreifbar, da ARP standardmäßig keine Authentifizierung vorsieht.
+
+Durch das Setzen statischer ARP-Einträge stellen Sie sicher, dass Ihr System nur mit den echten, bekannten Geräten im Netzwerk kommuniziert. Gefälschte ARP-Antworten werden ignoriert, und Angreifer können den Datenverkehr nicht mehr so einfach umleiten oder abfangen. Das erhöht die Sicherheit Ihres Containers oder Servers deutlich, besonders in gemeinsam genutzten Netzwerken.
+
+**Vorgehen (Beispiel):**
+
+1. **MAC-Adresse und IP der Netzwerkkarte ermitteln:**
    ```bash
    ip link show
    ip addr show
    ```
-2. Statischen ARP-Eintrag setzen:
+   Mit diesen Befehlen finden Sie heraus, wie Ihre Netzwerkkarte heißt (z.B. `eth0`) und welche IP- und MAC-Adresse sie hat.
+
+2. **Statischen ARP-Eintrag setzen:**
    ```bash
-   arp -i <interface> -s <ip> <mac>
+   arp -i eth0 -s 192.168.1.1 aa:bb:cc:dd:ee:ff
    ```
-3. Diesen Befehl in ein Skript wie `/etc/network/if-up.d/add-my-static-arp` eintragen und ausführbar machen.
+   Dieser Befehl sorgt dafür, dass Ihr System die IP-Adresse `192.168.1.1` immer mit der MAC-Adresse `aa:bb:cc:dd:ee:ff` verknüpft – und keine anderen ARP-Antworten für diese IP akzeptiert.
+
+3. **Automatisierung:**  
+   Damit der Eintrag nach einem Neustart erhalten bleibt, tragen Sie den Befehl in ein Skript wie `/etc/network/if-up.d/add-my-static-arp` ein und machen es ausführbar:
+   ```bash
+   echo "arp -i eth0 -s 192.168.1.1 aa:bb:cc:dd:ee:ff" > /etc/network/if-up.d/add-my-static-arp
+   chmod +x /etc/network/if-up.d/add-my-static-arp
+   ```
+
+**Erklärung der Befehle:**
+
+- `ip link show`  
+  Zeigt alle Netzwerkschnittstellen und deren MAC-Adressen an.
+
+- `ip addr show`  
+  Zeigt alle IP-Adressen der Netzwerkschnittstellen an.
+
+- `arp -i <interface> -s <ip> <mac>`  
+  Setzt einen statischen ARP-Eintrag für das angegebene Interface, die IP-Adresse und die zugehörige MAC-Adresse.
+
+- Eintrag in `/etc/network/if-up.d/`  
+  Skripte in diesem Verzeichnis werden automatisch beim Hochfahren des Netzwerks ausgeführt. So bleibt der Schutz auch nach einem Neustart aktiv.
+
+**Zusätzliche Optionen für noch mehr Sicherheit:**
+
+- **Mehrere statische ARP-Einträge:**  
+  Sie können für alle wichtigen Geräte im Netzwerk (z.B. Gateway, DNS-Server) statische Einträge setzen.
+
+- **ARP-Überwachung:**  
+  Mit Tools wie `arpwatch` können Sie ungewöhnliche Änderungen in der ARP-Tabelle überwachen und sich benachrichtigen lassen.
+
+- **Firewall-Regeln ergänzen:**  
+  Ergänzen Sie Ihre Firewall-Regeln, um verdächtige ARP-Pakete zu blockieren oder zu protokollieren.
+
+Mit diesen Maßnahmen machen Sie es Angreifern deutlich schwerer, den Netzwerkverkehr umzuleiten oder mitzulesen, und erhöhen die Sicherheit Ihres Systems im lokalen Netzwerk.
 
 ---
 
-## Aufgabe 14: Bash Prompt anpassen
+## Aufgabe 16: Automatische Überwachung und Alarmierung
+
+Automatische Überwachung und Alarmierung einrichten, damit Angriffe oder Auffälligkeiten auf dem System frühzeitig erkannt werden.
+
+Es wird empfohlen, nach der Einrichtung des Systems Tools wie `logwatch`, `rkhunter` oder ein zentrales Monitoring (z.B. mit Zabbix oder Prometheus) zu installieren. Diese Programme überwachen das System automatisch und informieren Sie, wenn ungewöhnliche Aktivitäten oder mögliche Angriffe erkannt werden.
+
+Viele Angriffe oder Probleme bleiben oft unbemerkt, wenn sie nicht aktiv überwacht werden. Ohne Überwachung kann es passieren, dass Sie erst sehr spät von einem Angriff, einem Einbruch oder einem technischen Problem erfahren – oft erst, wenn bereits Schaden entstanden ist. Mit automatischer Überwachung werden Sie rechtzeitig gewarnt und können schnell reagieren.
+
+Durch die automatische Analyse von Logdateien, Systemzustand und verdächtigen Aktivitäten werden Angriffe, Fehler oder Manipulationen frühzeitig erkannt. Alarmierungen per E-Mail oder im Monitoring-Dashboard helfen, sofort Maßnahmen zu ergreifen. So bleibt Ihr System sicher und Sie behalten jederzeit den Überblick.
+
+**Vorgehen (Beispiel):**
+
+1. **Logwatch installieren und konfigurieren:**
+   ```bash
+   apt install logwatch
+   ```
+   Logwatch analysiert täglich die Logdateien und schickt Ihnen eine Zusammenfassung per E-Mail.
+
+2. **Rootkit Hunter installieren:**
+   ```bash
+   apt install rkhunter
+   rkhunter --update
+   rkhunter --check
+   ```
+   `rkhunter` prüft das System regelmäßig auf bekannte Rootkits und meldet verdächtige Funde.
+
+3. **Zentrales Monitoring einrichten (optional):**
+   - Installieren Sie einen Agenten wie `zabbix-agent` oder `node_exporter` und verbinden Sie Ihr System mit einer Monitoring-Lösung wie Zabbix oder Prometheus.
+   - So können Sie viele Systeme zentral überwachen und erhalten bei Problemen sofort eine Benachrichtigung.
+
+**Erklärung der Befehle:**
+
+- `apt install logwatch`  
+  Installiert das Tool Logwatch, das Logdateien auswertet und Berichte erstellt.
+
+- `apt install rkhunter`  
+  Installiert Rootkit Hunter, ein Programm zur Erkennung von Rootkits und verdächtigen Dateien.
+
+- `rkhunter --update`  
+  Aktualisiert die Datenbank von rkhunter auf den neuesten Stand.
+
+- `rkhunter --check`  
+  Startet eine Überprüfung des Systems auf Rootkits.
+
+- **Monitoring-Agenten wie `zabbix-agent` oder `node_exporter`**  
+  Diese Programme senden Systemdaten an eine zentrale Überwachungsplattform.
+
+**Zusätzliche Optionen für noch mehr Sicherheit:**
+
+- **E-Mail-Benachrichtigungen einrichten:**  
+  Konfigurieren Sie Logwatch und rkhunter so, dass Sie Berichte und Warnungen per E-Mail erhalten.
+
+- **Weitere Überwachungstools nutzen:**  
+  Programme wie `fail2ban`, `auditd` oder `ossec` bieten zusätzliche Schutz- und Überwachungsfunktionen.
+
+- **Regelmäßige Auswertung der Berichte:**  
+  Prüfen Sie die Berichte regelmäßig und reagieren Sie auf Warnungen, um Probleme frühzeitig zu beheben.
+
+Mit diesen Maßnahmen erkennen Sie Angriffe und Probleme frühzeitig und können Ihr System gezielt schützen und stabil betreiben.
+
+---
+
+## Aufgabe 17: Regelmäßige Backups
+
+Ein automatisiertes Backup-Konzept (z.B. mit rsnapshot, borg, restic) schützt vor Datenverlust und Ransomware.
+
+---
+
+## Aufgabe 18: Dateisystem- und Rechtehärtung
+
+Zusätzliche Maßnahmen wie das Setzen restriktiver Rechte auf sensible Dateien (chmod, chown), das Deaktivieren von nicht benötigten Systemdiensten und das Verwenden von AppArmor oder SELinux erhöhen die Sicherheit weiter.
+
+---
+
+## Aufgabe 19: Verwendung von sicheren Protokollen
+
+Unsichere Dienste wie FTP, Telnet oder unverschlüsseltes HTTP sollten konsequent deaktiviert oder durch sichere Alternativen (SFTP, HTTPS) ersetzt werden.
+
+---
+
+## Aufgabe 20: Regelmäßige Überprüfung offener Ports
+
+Mit Tools wie nmap oder netstat kann regelmäßig geprüft werden, ob nur die gewünschten Ports offen sind.
+
+---
+
+## Aufgabe 21: Bash Prompt anpassen
 
 **Ziel:**  
 Einen farbigen, informativen Prompt für Benutzer einrichten.
