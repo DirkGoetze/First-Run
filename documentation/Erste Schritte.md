@@ -116,7 +116,7 @@ Durch das Eintragen dieser Zeile in die Crontab wird Ihr System regelmäßig aut
 
 ## Aufgabe 3: Empfohlene Software installieren
 
-Es gibt zahlreiche hilfreiche Tools für die Administration die einem die Arbeit erleichern können. In dieser Aufgabe installieren Sie die am meisten empfohlen Tools für die Nutzung in einer VM/Container.
+Es gibt zahlreiche hilfreiche Tools für die Administration die einem die Arbeit erleichtern können. In dieser Aufgabe installieren Sie die am meisten empfohlen Tools für die Nutzung in einer VM/Container.
 
 Installieren Sie immer direkt nach der Grundinstallation wichtige Programme wie `sudo`, `curl`, `nmap`, `htop` und `net-tools`. Diese Werkzeuge erleichtern die Verwaltung und Überwachung Ihres Containers erheblich.
 
@@ -881,7 +881,7 @@ Viele Angriffe oder Probleme bleiben oft unbemerkt, wenn sie nicht aktiv überwa
 
 Durch die automatische Analyse von Logdateien, Systemzustand und verdächtigen Aktivitäten werden Angriffe, Fehler oder Manipulationen frühzeitig erkannt. Alarmierungen per E-Mail oder im Monitoring-Dashboard helfen, sofort Maßnahmen zu ergreifen. So bleibt Ihr System sicher und Sie behalten jederzeit den Überblick.
 
-**Vorgehen (Beispiel):**
+**Vorgehen (Beispiele):**
 
 1. **Logwatch installieren und konfigurieren:**
    ```bash
