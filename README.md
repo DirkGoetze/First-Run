@@ -5,23 +5,7 @@ Dieses Skript automatisiert die Ersteinrichtung und Härtung von Linux- Servern.
 
 Ziel ist ein sicherer, wartbarer und sofort produktiver Serverbetrieb nach Abschluss der Erstinstallation und ausführung diese Skriptes.
 
-## Voraussetzungen
-Das Skript muss mit Root-Rechten ausgeführt werden. Sollte dies nicht der Fall sein und ein User das Skript ohne ausreichende Rechte ausführt, wird eine Fehlermeldung ausgegeben. Die Software 'dialog' 
-muss installiert sein (wird jedoch bei Bedarf automatisch nach installiert).
-
-## Funktionsumfang
-* Systemaktualisierung und automatisierte Updates per Cronjob einrichten.
-* Installation empfohlener Softwarepakete über eine Auswahlmaske.
-* Anpassung des Tastaturlayouts und der Systemzeitzone.
-* Anlegen eines administrativen Benutzers mit sicheren Einstellungen.
-* Vergabe und Änderung des Hostnamens für IPv4 und IPv6.
-* Absicherung des SSH-Logins (z.B. Public-Key, Timeout, Nutzerbeschränkung).
-* Einrichtung und Konfiguration einer Firewall mit Portauswahl.
-* Schutz des Logins (CLI/SSH) durch Fail2ban.
-* Aktivierung von DDoS-, IP-Spoofing- und ARP-Spoofing-Schutzmechanismen.
-* Anpassung des Bash-Prompts für Benutzer (farbig, informativ).
-
-## Anleitung: Skript herunterladen und ausführen (ohne git)
+## Anleitung: Skript herunterladen und ausführen
 
 1. **Öffne ein Terminal** auf deinem Linux-System.
 
@@ -46,5 +30,20 @@ muss installiert sein (wird jedoch bei Bedarf automatisch nach installiert).
    ```
 
 **Hinweis:**  
-Das Skript benötigt Root-Rechte.  
-Folge anschliessend den Anweisungen im Dialog-Menü, um die Ersteinrichtung abzuschließen.
+Beachte die Voraussetzungen für das Ausführen des Skript! Folge anschliessend den Anweisungen im Dialog-Menü, um die Ersteinrichtung abzuschließen.
+
+## Voraussetzungen
+Das Skript muss mit Root-Rechten ausgeführt werden. Sollte dies nicht der Fall sein und ein User das Skript ohne ausreichende Rechte ausführt, wird eine Fehlermeldung ausgegeben. Die Software 'dialog' 
+muss installiert sein (wird jedoch bei Bedarf automatisch nach installiert).
+
+## Funktionsumfang
+* Systemaktualisierung und automatisierte Updates per Cronjob einrichten.
+* Installation empfohlener Softwarepakete über eine Auswahlmaske.
+* Anpassung des Tastaturlayouts und der Systemzeitzone.
+* Anlegen eines administrativen Benutzers mit sicheren Einstellungen.
+* Vergabe und Änderung des Hostnamens für IPv4 und IPv6.
+* Absicherung des SSH-Logins (z.B. Public-Key, Timeout, Nutzerbeschränkung).
+* Einrichtung und Konfiguration einer Firewall mit Portauswahl.
+* Schutz des Logins (CLI/SSH) durch Fail2ban.
+* Aktivierung von DDoS-, IP-Spoofing- und ARP-Spoofing-Schutzmechanismen.
+* Anpassung des Bash-Prompts für Benutzer (farbig, informativ).
