@@ -4,7 +4,6 @@
 
 Nach der Installation eines neuen LXC-Containers ist es wichtig, das System sicher, aktuell und produktiv zu konfigurieren. In diesem Kapitel werden alle notwendigen Aufgaben beschrieben, die Sie **manuell** durchführen sollten, um Ihren Container optimal einzurichten und abzusichern.
 
-<!-- Inhaltsverzeichnis -->
 ## Inhaltsverzeichnis
 
 - [Einleitung](#einleitung)
@@ -29,6 +28,10 @@ Nach der Installation eines neuen LXC-Containers ist es wichtig, das System sich
 - [Aufgabe 19: Verwendung von sicheren Protokollen](#aufgabe-19-verwendung-von-sicheren-protokollen)
 - [Aufgabe 20: Regelmäßige Überprüfung offener Ports](#aufgabe-20-regelmäßige-überprüfung-offener-ports)
 - [Aufgabe 21: Bash Prompt anpassen](#aufgabe-21-bash-prompt-anpassen)
+- [Aufgabe 22: Distributionsloge bei Login](#aufgabe-22-distributionsloge-bei-login)
+- [Aufgabe 23: Midnight Commander](#aufgabe-23-midnight-commander)
+- [Aufgabe 24: Grafische Oberfläche](#aufgabe-24-grafische-oberfläche)
+  - [Zusatzaufgabe 24a: xfce4-whiskermenu-plugin](#zusatzaufgabe-24a-xfce4-whiskermenu-plugin)
 - [Abschluss](#abschluss)
 
 ---
@@ -932,23 +935,281 @@ Mit diesen Maßnahmen erkennen Sie Angriffe und Probleme frühzeitig und können
 
 ## Aufgabe 17: Regelmäßige Backups
 
-Ein automatisiertes Backup-Konzept (z.B. mit rsnapshot, borg, restic) schützt vor Datenverlust und Ransomware.
+Es wird dringend empfohlen, nach der Grundinstallation ein automatisiertes Backup-Konzept einzurichten. Regelmäßige Backups schützen Ihr System und Ihre Daten vor Verlust durch Hardware-Fehler, versehentliche Löschungen, Softwareprobleme oder Angriffe wie Ransomware.
+
+Auch bei größter Vorsicht können Fehler passieren oder unerwartete Probleme auftreten. Ohne Backup besteht das Risiko, dass wichtige Daten unwiederbringlich verloren gehen. Besonders bei Servern, die dauerhaft laufen und viele Dienste bereitstellen, ist ein aktuelles Backup essenziell, um im Notfall schnell wieder arbeitsfähig zu sein. Automatisierte Backups sorgen dafür, dass Sie nicht auf manuelle Sicherungen angewiesen sind und keine Sicherung vergessen wird.
+
+Backups sind ein wichtiger Bestandteil der IT-Sicherheit. Sie ermöglichen es, nach einem Angriff (z.B. durch Ransomware) oder einem Systemausfall das System und die Daten schnell wiederherzustellen. So minimieren Sie Ausfallzeiten und verhindern, dass Angreifer durch Datenverschlüsselung oder -löschung dauerhaften Schaden anrichten können.
+
+**Vorgehen (Beispiele):**
+
+1. **Backup-Tool installieren:**  
+   Wählen Sie ein geeignetes Backup-Programm, z.B. `rsnapshot`, `borg` oder `restic`, und installieren Sie es:
+   ```bash
+   apt install rsnapshot
+   ```
+   oder
+   ```bash
+   apt install borgbackup
+   ```
+   oder
+   ```bash
+   apt install restic
+   ```
+
+2. **Backup-Ziel festlegen:**  
+   Legen Sie fest, wohin die Backups gespeichert werden sollen (z.B. externe Festplatte, NAS, Cloud-Speicher).
+
+3. **Backup-Plan erstellen:**  
+   Richten Sie regelmäßige Backups per Cronjob ein, z.B. täglich um 2 Uhr:
+   ```bash
+   0 2 * * * /usr/bin/rsnapshot daily
+   ```
+
+4. **Backup testen:**  
+   Überprüfen Sie regelmäßig, ob die Backups erfolgreich erstellt wurden und eine Wiederherstellung funktioniert.
+
+**Erklärung der Befehle:**
+
+- `apt install rsnapshot`  
+  Installiert das Programm `rsnapshot`, das inkrementelle Backups auf Dateiebene ermöglicht.
+
+- `apt install borgbackup`  
+  Installiert `borg`, ein modernes, schnelles und sicheres Backup-Tool mit Kompression und Verschlüsselung.
+
+- `apt install restic`  
+  Installiert `restic`, ein einfaches und sicheres Backup-Programm, das verschiedene Speicherziele unterstützt.
+
+- Cronjob-Zeile (z.B. für rsnapshot):  
+  `0 2 * * * /usr/bin/rsnapshot daily`  
+  Führt das tägliche Backup jeden Tag um 2 Uhr nachts automatisch aus.
+
+**Zusätzliche Optionen für noch mehr Sicherheit:**
+
+- **Backups verschlüsseln:**  
+  Nutzen Sie die Verschlüsselungsfunktionen von `borg` oder `restic`, um Ihre Sicherungen vor unbefugtem Zugriff zu schützen.
+
+- **Backups extern speichern:**  
+  Lagern Sie Backups auf ein externes Medium oder in die Cloud aus, damit sie auch bei Diebstahl oder Brand erhalten bleiben.
+
+- **Backup-Integrität prüfen:**  
+  Testen Sie regelmäßig die Wiederherstellung, um sicherzugehen, dass die Backups im Notfall funktionieren.
+
+- **Versionierung und Aufbewahrungsregeln:**  
+  Legen Sie fest, wie viele Backup-Versionen aufbewahrt werden sollen, um auch ältere Datenstände wiederherstellen zu können.
+
+Mit diesen Maßnahmen stellen Sie sicher, dass Ihre Daten und Ihr System jederzeit wiederhergestellt werden können – egal, was passiert.
 
 ---
 
 ## Aufgabe 18: Dateisystem- und Rechtehärtung
 
-Zusätzliche Maßnahmen wie das Setzen restriktiver Rechte auf sensible Dateien (chmod, chown), das Deaktivieren von nicht benötigten Systemdiensten und das Verwenden von AppArmor oder SELinux erhöhen die Sicherheit weiter.
+Es wird empfohlen, nach der Grundinstallation das Dateisystem und die Zugriffsrechte gezielt zu härten. Ziel ist es, sensible Dateien und Verzeichnisse vor unbefugtem Zugriff zu schützen und unnötige Angriffsflächen zu minimieren. Dazu gehört das Setzen restriktiver Rechte, das Deaktivieren nicht benötigter Systemdienste sowie der Einsatz von Sicherheitsmechanismen wie AppArmor oder SELinux.
+
+Viele Angriffe auf Server nutzen falsch gesetzte Dateirechte oder unnötig laufende Dienste aus, um sich Zugriff zu verschaffen oder Schadcode einzuschleusen. Standardmäßig sind auf vielen Systemen Rechte zu großzügig vergeben oder Dienste aktiv, die gar nicht benötigt werden. Durch gezielte Härtung wird verhindert, dass Angreifer Schwachstellen ausnutzen oder sich im System ausbreiten können.
+
+Mit restriktiven Dateirechten und deaktivierten Diensten wird die Angriffsfläche des Systems deutlich reduziert. Sicherheitsmechanismen wie AppArmor oder SELinux überwachen zusätzlich, welche Programme auf welche Dateien zugreifen dürfen. So werden selbst bei einem erfolgreichen Angriff weitere Schäden verhindert und das System bleibt besser geschützt.
+
+**Vorgehen (Beispiele):**
+
+1. **Dateirechte anpassen:**  
+   Setzen Sie restriktive Rechte auf sensible Dateien, z.B.:
+   ```bash
+   chmod 600 /etc/shadow
+   chmod 700 /root
+   ```
+   Damit können nur noch berechtigte Nutzer auf diese Dateien/Verzeichnisse zugreifen.
+
+2. **Besitzverhältnisse prüfen und anpassen:**  
+   ```bash
+   chown root:root /etc/shadow
+   chown root:root /root
+   ```
+
+3. **Nicht benötigte Dienste deaktivieren:**  
+   Prüfen Sie laufende Dienste und deaktivieren Sie alles, was nicht gebraucht wird:
+   ```bash
+   systemctl list-unit-files --type=service
+   systemctl disable <dienstname>
+   systemctl stop <dienstname>
+   ```
+
+4. **AppArmor oder SELinux aktivieren:**  
+   Installieren und aktivieren Sie einen Sicherheitsmechanismus:
+   ```bash
+   apt install apparmor
+   systemctl enable --now apparmor
+   ```
+   oder bei SELinux (z.B. auf CentOS):
+   ```bash
+   setenforce 1
+   ```
+
+**Erklärung der Befehle:**
+
+- `chmod 600 /etc/shadow`  
+  Setzt die Rechte so, dass nur der Besitzer (root) die Datei lesen und schreiben darf.
+
+- `chmod 700 /root`  
+  Nur root hat Zugriff auf das Home-Verzeichnis von root.
+
+- `chown root:root /etc/shadow`  
+  Setzt root als Besitzer und Gruppe der Datei.
+
+- `systemctl disable <dienstname>`  
+  Deaktiviert einen Dienst dauerhaft.
+
+- `systemctl stop <dienstname>`  
+  Stoppt einen Dienst sofort.
+
+- `apt install apparmor`  
+  Installiert AppArmor, ein System zur Zugriffskontrolle.
+
+- `systemctl enable --now apparmor`  
+  Aktiviert AppArmor sofort und beim Systemstart.
+
+**Zusätzliche Optionen für noch mehr Sicherheit:**
+
+- **Auditd installieren:**  
+  Überwacht und protokolliert alle Zugriffe auf wichtige Dateien:
+  ```bash
+  apt install auditd
+  ```
+
+- **Dateisystem auf Integrität prüfen:**  
+  Tools wie `aide` oder `tripwire` erkennen Manipulationen an Systemdateien.
+
+- **Automatisierte Rechteprüfung:**  
+  Mit Skripten oder Tools wie `lynis` können Sie regelmäßig die Rechte und Sicherheitseinstellungen prüfen lassen.
+
+- **Sicherheitsprofile anpassen:**  
+  AppArmor- oder SELinux-Profile können individuell angepasst werden, um nur die wirklich notwendigen Zugriffe zu erlauben.
+
+Mit diesen Maßnahmen härten Sie Ihr System gezielt ab und erschweren Angreifern den Zugriff auf sensible Bereiche.
 
 ---
 
 ## Aufgabe 19: Verwendung von sicheren Protokollen
 
-Unsichere Dienste wie FTP, Telnet oder unverschlüsseltes HTTP sollten konsequent deaktiviert oder durch sichere Alternativen (SFTP, HTTPS) ersetzt werden.
+Es wird empfohlen, unsichere Dienste wie FTP, Telnet oder unverschlüsseltes HTTP konsequent zu deaktivieren oder durch sichere Alternativen wie SFTP und HTTPS zu ersetzen. So stellen Sie sicher, dass alle Datenübertragungen zwischen Ihrem Server und den Nutzern verschlüsselt und vor dem Zugriff Dritter geschützt sind.
+
+Viele ältere Protokolle übertragen Passwörter und Daten im Klartext. Das bedeutet, dass Angreifer diese Informationen leicht mitlesen können, wenn sie Zugriff auf das Netzwerk haben. Moderne Protokolle wie SFTP (statt FTP) oder HTTPS (statt HTTP) verschlüsseln die Verbindung und machen das Abhören oder Manipulieren der Daten praktisch unmöglich.
+
+Durch die konsequente Nutzung verschlüsselter Protokolle verhindern Sie, dass sensible Informationen wie Zugangsdaten oder persönliche Daten abgefangen werden. Das schützt nicht nur Ihre Nutzer, sondern auch Ihr System vor Angriffen wie Man-in-the-Middle oder Identitätsdiebstahl.
+
+**Vorgehen (Beispiele):**
+
+1. **FTP durch SFTP ersetzen:**  
+   Deaktivieren Sie den klassischen FTP-Dienst und nutzen Sie stattdessen SFTP, das über den SSH-Dienst läuft:
+   ```bash
+   systemctl disable vsftpd
+   systemctl stop vsftpd
+   # SFTP ist meist automatisch mit SSH aktiviert
+   ```
+
+2. **HTTP durch HTTPS ersetzen:**  
+   Installieren Sie ein SSL-Zertifikat (z.B. mit Let's Encrypt) und richten Sie Ihren Webserver so ein, dass alle Anfragen auf HTTPS umgeleitet werden:
+   ```bash
+   apt install certbot
+   certbot --apache   # oder --nginx, je nach Webserver
+   ```
+
+3. **Telnet deaktivieren:**  
+   Falls Telnet installiert ist, deaktivieren Sie den Dienst:
+   ```bash
+   systemctl disable telnet.socket
+   systemctl stop telnet.socket
+   ```
+
+**Erklärung der Befehle:**
+
+- `systemctl disable vsftpd`  
+  Deaktiviert den FTP-Dienst dauerhaft, sodass er beim Systemstart nicht mehr startet.
+
+- `systemctl stop vsftpd`  
+  Stoppt den FTP-Dienst sofort.
+
+- `certbot --apache`  
+  Fordert ein kostenloses SSL-Zertifikat an und richtet es für Apache automatisch ein.
+
+- `systemctl disable telnet.socket`  
+  Deaktiviert den Telnet-Dienst dauerhaft.
+
+- `systemctl stop telnet.socket`  
+  Stoppt den Telnet-Dienst sofort.
+
+**Zusätzliche Optionen für noch mehr Sicherheit:**
+
+- **HTTP auf HTTPS umleiten:**  
+  Richten Sie eine automatische Weiterleitung ein, damit alle Nutzer immer die verschlüsselte Verbindung nutzen.
+
+- **Veraltete Protokolle deaktivieren:**  
+  Deaktivieren Sie in der Webserver-Konfiguration alte SSL/TLS-Versionen (z.B. SSLv3, TLS 1.0).
+
+- **Starke Verschlüsselung erzwingen:**  
+  Konfigurieren Sie Ihren Webserver so, dass nur starke Verschlüsselungsalgorithmen erlaubt sind.
+
+- **Regelmäßige Überprüfung:**  
+  Nutzen Sie Tools wie [SSL Labs Server Test](https://www.ssllabs.com/ssltest/), um Ihre HTTPS-Konfiguration zu prüfen.
+
+Mit diesen Maßnahmen sorgen Sie dafür, dass alle Datenübertragungen sicher und verschlüsselt erfolgen und Ihr System optimal gegen Abhören und Manipulation geschützt ist.
 
 ---
 
 ## Aufgabe 20: Regelmäßige Überprüfung offener Ports
+
+Es wird empfohlen, regelmäßig zu kontrollieren, welche Ports auf dem System offen sind. So stellen Sie sicher, dass nur die gewünschten Dienste erreichbar sind und keine unnötigen oder unsicheren Ports offen bleiben.
+
+Offene Ports sind wie Türen ins System. Jeder nicht benötigte oder vergessene offene Port kann eine Schwachstelle darstellen, über die Angreifer ins System eindringen könnten. Gerade nach Änderungen an der Konfiguration oder Installation neuer Software können sich unbemerkt neue offene Ports ergeben. Durch regelmäßige Überprüfung behalten Sie die Kontrolle und können schnell reagieren, falls unerwünschte Dienste erreichbar sind.
+
+Die regelmäßige Kontrolle offener Ports hilft, die Angriffsfläche Ihres Systems zu minimieren. Sie erkennen sofort, wenn neue oder unerwünschte Dienste erreichbar sind, und können diese gezielt schließen. So verhindern Sie, dass Angreifer über vergessene oder falsch konfigurierte Ports Zugriff auf Ihr System erhalten.
+
+**Vorgehen (Beispiele):**
+
+1. **Mit nmap das eigene System scannen:**  
+   ```bash
+   nmap -sT -O localhost
+   ```
+   Dieser Befehl zeigt alle offenen TCP-Ports und versucht, das Betriebssystem zu erkennen.
+
+2. **Mit netstat offene Ports anzeigen:**  
+   ```bash
+   netstat -tuln
+   ```
+   Listet alle aktuell offenen TCP- und UDP-Ports sowie die zugehörigen Dienste auf.
+
+3. **Mit ss offene Ports prüfen (moderner Ersatz für netstat):**  
+   ```bash
+   ss -tuln
+   ```
+   Zeigt ebenfalls alle offenen Ports und zugehörige Prozesse an.
+
+**Erklärung der Befehle:**
+
+- `nmap -sT -O localhost`  
+  Scannt das lokale System auf offene TCP-Ports (`-sT`) und versucht, das Betriebssystem zu erkennen (`-O`). Nmap ist ein leistungsfähiges Tool zur Netzwerkanalyse.
+
+- `netstat -tuln`  
+  Zeigt alle offenen TCP (`-t`) und UDP (`-u`) Ports an, ohne Namensauflösung (`-n`), und listet nur die Ports, die auf Verbindungen warten (`-l`).
+
+- `ss -tuln`  
+  Ähnlich wie netstat, aber schneller und moderner. Zeigt offene Ports und die zugehörigen Prozesse.
+
+**Zusätzliche Optionen für noch mehr Sicherheit:**
+
+- **Automatisierte Port-Scans:**  
+  Richten Sie einen Cronjob ein, der regelmäßig einen Portscan durchführt und das Ergebnis protokolliert oder per E-Mail verschickt.
+
+- **Alarmierung bei neuen offenen Ports:**  
+  Nutzen Sie Monitoring-Tools wie `Nagios`, `Zabbix` oder `Checkmk`, um automatisch benachrichtigt zu werden, wenn sich die Port-Konfiguration ändert.
+
+- **Firewall-Regeln regelmäßig überprüfen:**  
+  Kontrollieren Sie, ob die Firewall-Regeln noch zu Ihrer gewünschten Sicherheitsstrategie passen.
+
+- **Unnötige Dienste deaktivieren:**  
+  Schließen Sie alle Ports, die nicht für den Betrieb benötigt werden, indem Sie die zugehörigen Dienste stoppen oder deinstallieren.
+
+Mit diesen Maßnahmen behalten Sie die Kontrolle über die Erreichbarkeit Ihres Systems und können Sicherheitslücken frühzeitig erkennen und schließen.## Aufgabe 20: Regelmäßige Überprüfung offener Ports
 
 Mit Tools wie nmap oder netstat kann regelmäßig geprüft werden, ob nur die gewünschten Ports offen sind.
 
@@ -956,15 +1217,296 @@ Mit Tools wie nmap oder netstat kann regelmäßig geprüft werden, ob nur die ge
 
 ## Aufgabe 21: Bash Prompt anpassen
 
-**Ziel:**  
-Einen farbigen, informativen Prompt für Benutzer einrichten.
+Es wird empfohlen, einen farbigen und informativen Bash-Prompt für Benutzer einzurichten. Ein angepasster Prompt zeigt wichtige Informationen wie Benutzername, Hostname und aktuelles Verzeichnis übersichtlich und farbig an.
 
-**Vorgehen:**
-1. Öffnen Sie die Datei `~/.bashrc` des jeweiligen Benutzers.
-2. Fügen Sie einen farbigen Prompt-Block ein, z.B.:
+Ein übersichtlicher Prompt erleichtert die Arbeit auf der Kommandozeile erheblich. Sie sehen auf einen Blick, als welcher Benutzer Sie angemeldet sind, auf welchem System Sie arbeiten und in welchem Verzeichnis Sie sich gerade befinden. Das hilft, Fehler zu vermeiden – zum Beispiel, wenn Sie versehentlich als root auf dem falschen Server arbeiten oder im falschen Verzeichnis kritische Befehle ausführen.
+
+Ein informativer Prompt trägt zur Sicherheit bei, weil Sie sofort erkennen, ob Sie mit erhöhten Rechten (root) arbeiten oder auf einem produktiven System angemeldet sind. So sinkt das Risiko, versehentlich gefährliche Befehle auszuführen oder auf dem falschen System Änderungen vorzunehmen. Besonders in Umgebungen mit mehreren Servern oder Benutzern ist das ein wichtiger Schutz vor Bedienfehlern.
+
+**Vorgehen (Beispiel):**
+
+1. Öffnen Sie die Datei `~/.bashrc` des jeweiligen Benutzers:
+   ```bash
+   nano ~/.bashrc
+   ```
+2. Fügen Sie am Ende der Datei einen farbigen Prompt-Block ein, z.B.:
    ```bash
    PS1='\[\033[01;31m\]\u\[\033[01;33m\]@\[\033[01;36m\]\h \[\033[01;33m\]\w \[\033[01;35m\]\$ \[\033[00m\]'
    ```
+3. Speichern Sie die Datei und laden Sie die Einstellungen neu:
+   ```bash
+   source ~/.bashrc
+   ```
+
+**Erklärung der Befehle:**
+
+- `nano ~/.bashrc`  
+  Öffnet die Konfigurationsdatei des Bash-Prompts im Editor.
+
+- `PS1='...'`  
+  Definiert das Aussehen des Prompts. Die enthaltenen Farb-Codes sorgen für eine farbige Darstellung von Benutzername (`\u`), Hostname (`\h`) und aktuellem Verzeichnis (`\w`).
+
+- `source ~/.bashrc`  
+  Lädt die geänderte Konfiguration, damit der neue Prompt sofort aktiv wird.
+
+**Zusätzliche Optionen für noch mehr Sicherheit:**
+
+- **Warnung bei root-Login:**  
+  Sie können den Prompt für root besonders auffällig gestalten, z.B. mit rotem Hintergrund oder einer Warnmeldung.
+
+- **Anzeige der aktuellen Umgebung:**  
+  Ergänzen Sie den Prompt um Informationen wie Git-Branch, aktive Python-Umgebung oder Zeitstempel.
+
+- **Prompt für alle Benutzer anpassen:**  
+  Passen Sie `/etc/bash.bashrc` an, um den Prompt systemweit für alle Nutzer zu setzen.
+
+- **Berechtigungen der `.bashrc` prüfen:**  
+  Stellen Sie sicher, dass nur der jeweilige Benutzer die Datei bearbeiten kann:
+  ```bash
+  chmod 600 ~/.bashrc
+  ```
+
+Mit diesen Anpassungen behalten Sie stets den Überblick über Ihre Arbeitsumgebung und minimieren das Risiko von Fehlbedienungen und sicherheitsrelevanten Fehlern.
+
+---
+
+## Aufgabe 22: Distributionsloge bei Login
+
+Damit man ein nettes Distributions-Logo mit einigen Meta-Daten beim Einloggen bzw. beim Öffnen des Terminals bekommt benötigt man ein Programm namens `screenfetch` oder `neofetch`. Dank dieser kann der Wunsch schnell realisiert werden.
+
+Ein solches Logo mit Systemdaten sorgt dafür, dass Sie beim Login sofort wichtige Informationen wie Distribution, Kernel-Version, Speicherverbrauch oder Hostname sehen. Das hilft, schnell zu erkennen, auf welchem System Sie arbeiten – besonders, wenn Sie mehrere Server oder Container verwalten. So vermeiden Sie Verwechslungen und behalten stets den Überblick.
+
+Die Anzeige von Systeminformationen beim Login trägt zur Sicherheit bei, weil Sie sofort erkennen, ob Sie sich auf dem richtigen System befinden. Das reduziert das Risiko, versehentlich auf einem falschen Server kritische Befehle auszuführen. Außerdem können Sie durch die angezeigten Daten (z.B. verfügbare Updates, Systemlast) frühzeitig Auffälligkeiten erkennen und schneller reagieren.
+
+**Vorgehen (Beispiel):**
+
+1. **Screenfetch installieren:**
+   ```bash
+   apt install screenfetch
+   ```
+   Installiert das Tool, das beim Start ein ASCII-Logo und Systeminfos anzeigt.
+
+2. **Screenfetch beim Login automatisch ausführen:**  
+   Öffnen Sie die Datei `~/.bashrc` und fügen Sie am Ende folgende Zeile ein:
+   ```bash
+   screenfetch
+   ```
+   Damit wird das Logo bei jedem neuen Terminal-Fenster angezeigt.
+
+**Erklärung der Befehle:**
+
+- `apt install screenfetch`  
+  Installiert das Programm `screenfetch` aus den Paketquellen.
+
+- `screenfetch`  
+  Zeigt das Distributionslogo und Systeminformationen im Terminal an.
+
+- Eintrag in `~/.bashrc`  
+  Sorgt dafür, dass `screenfetch` bei jedem Login automatisch ausgeführt wird.
+
+**Zusätzliche Optionen für noch mehr Sicherheit:**
+
+- **Alternative Tools:**  
+  Sie können auch `neofetch` verwenden, das noch mehr Anpassungsmöglichkeiten bietet:
+  ```bash
+  apt install neofetch
+  echo "neofetch" >> ~/.bashrc
+  ```
+
+- **Anzeige von Warnungen:**  
+  Ergänzen Sie die `.bashrc` um Hinweise, wenn Sie sich als root anmelden, z.B.:
+  ```bash
+  if [ "$EUID" -eq 0 ]; then echo "Achtung: Sie sind als root angemeldet!"; fi
+  ```
+
+- **Systemstatus anzeigen:**  
+  Lassen Sie zusätzlich wichtige Statusmeldungen (z.B. verfügbare Updates oder Festplattenplatz) beim Login anzeigen.  
+  **Beispiel:**  
+  Fügen Sie am Ende Ihrer `~/.bashrc` folgende Zeilen ein, um beim Login die Anzahl verfügbarer Updates und den freien Festplattenspeicher anzuzeigen:
+  ```bash
+  echo "Verfügbare Updates:"
+  apt list --upgradable 2>/dev/null | grep -v "Listing..."
+  echo "Freier Speicherplatz:"
+  df -h /
+  ```
+  So sehen Sie direkt nach dem Einloggen, ob Updates anstehen und wie viel Speicherplatz noch verfügbar ist.
+
+Mit diesen Anpassungen behalten Sie stets den Überblick über Ihr System und minimieren das Risiko von Fehlbedienungen oder Verwechslungen.
+
+---
+
+## Aufgabe 23: Midnight Commander
+
+Menschen die Computer noch aus den Zeiten von DOS kennen, erinnern sich sicher wehmütig an den Norton Commander. Nun hier die gute Nachricht, er hat in gewisser Weise überlebt. Nur nennt er sich heute Midnight Commander.
+
+Gerade auf Servern ohne grafische Oberfläche ist die Verwaltung von Dateien oft umständlich und fehleranfällig, wenn man nur mit klassischen Befehlen wie `cp`, `mv` oder `rm` arbeitet. Midnight Commander bietet eine übersichtliche, zweigeteilte Oberfläche, in der Sie Dateien einfach kopieren, verschieben, löschen oder umbenennen können. Das reduziert die Gefahr von Tippfehlern und erleichtert auch komplexe Dateioperationen erheblich.
+
+Durch die komfortable Bedienung von Midnight Commander sinkt das Risiko, versehentlich wichtige Systemdateien zu löschen oder falsche Befehle auszuführen. Die klare Darstellung der Verzeichnisstruktur hilft, sich besser zurechtzufinden und Fehler zu vermeiden. Außerdem können Sie mit mc schnell die Rechte und Besitzer von Dateien prüfen und anpassen, was die Kontrolle über sensible Bereiche des Systems verbessert.
+
+**Vorgehen (Beispiel):**
+
+1. **Midnight Commander installieren:**
+   ```bash
+   apt install mc
+   ```
+   Installiert das Programm auf Ihrem System.
+
+2. **Midnight Commander starten:**
+   ```bash
+   mc
+   ```
+   Öffnet die zweigeteilte Dateimanager-Oberfläche im Terminal.
+
+**Erklärung der Befehle:**
+
+- `apt install mc`  
+  Installiert den Midnight Commander aus den Paketquellen. Das Programm steht für die meisten Linux-Distributionen zur Verfügung.
+
+- `mc`  
+  Startet den Midnight Commander im aktuellen Terminal. Sie können mit den Pfeiltasten navigieren, mit F5 kopieren, mit F6 verschieben und mit F8 löschen.
+
+**Zusätzliche Optionen für noch mehr Sicherheit:**
+
+- **Arbeiten als normaler Benutzer:**  
+  Nutzen Sie mc möglichst nicht als root, sondern als normaler Benutzer. So vermeiden Sie versehentliche Änderungen an Systemdateien.
+
+- **Dateirechte und Besitzer prüfen:**  
+  Mit mc können Sie schnell die Rechte und Besitzer von Dateien anzeigen und bei Bedarf anpassen (F9 → Datei → Rechte ändern).
+
+- **Versteckte Dateien anzeigen:**  
+  Aktivieren Sie die Anzeige versteckter Dateien (F9 → Optionen → Versteckte Dateien anzeigen), um auch Konfigurationsdateien im Blick zu behalten.
+
+- **Sicheres Löschen:**  
+  Löschen Sie Dateien mit Bedacht und prüfen Sie vor dem Löschen, ob Sie sich im richtigen Verzeichnis befinden.
+
+Mit diesen Maßnahmen nutzen Sie den Midnight Commander nicht nur komfortabel, sondern auch sicher und vermeiden typische Fehler bei der Dateiverwaltung auf dem Server.
+
+---
+
+## Aufgabe 24: Grafische Oberfläche
+
+Manchmal ist es notwendig oder einfach nur kompfortabler, eine grafische Benutzeroberfläche zu nutzen. Etwa um mit einen Browser schnell das Internet zu nutzen.
+
+Dazu können Sie bei Bedarf eine grafische Benutzeroberfläche (GUI) wie XFCE zu installieren, wenn Sie Programme nutzen möchten, die eine grafische Umgebung erfordern – zum Beispiel einen Webbrowser oder grafische Tools zur Systemverwaltung.
+
+Gerade auf Servern oder in Containern wird meist auf eine GUI verzichtet, um Ressourcen zu sparen und die Angriffsfläche zu minimieren. Es gibt jedoch Situationen, in denen eine grafische Oberfläche die Arbeit deutlich erleichtert, etwa bei der Konfiguration komplexer Anwendungen oder bei der Nutzung von Programmen, die keine Kommandozeilen-Alternative bieten. XFCE ist dabei eine besonders ressourcenschonende und schnelle Desktop-Umgebung, die sich gut für virtuelle Maschinen und Container eignet.
+
+Die Installation einer GUI sollte immer wohlüberlegt erfolgen, da zusätzliche Software auch neue potenzielle Schwachstellen mit sich bringt. Wenn Sie jedoch eine grafische Oberfläche benötigen, ist es ratsam, eine möglichst schlanke und sichere Umgebung wie XFCE zu wählen und nur die wirklich benötigten Programme zu installieren. Durch gezielte Konfiguration (z.B. Deaktivieren unnötiger Netzwerkdienste, Einschränkung der Nutzerrechte) kann die Angriffsfläche minimiert werden. Außerdem können Sie die GUI so einrichten, dass sie nur lokal oder über sichere Verbindungen (z.B. SSH-Tunnel, VPN) erreichbar ist.
+
+**Vorgehen (Beispiel):**
+
+1. **XFCE installieren:**
+   ```bash
+   apt update
+   apt install xfce4 xfce4-goodies
+   ```
+   Installiert die XFCE-Desktopumgebung und nützliche Zusatzprogramme.
+
+2. **Optional: VNC-Server installieren, um die Oberfläche aus der Ferne zu nutzen:**
+   ```bash
+   apt install tightvncserver
+   ```
+   Damit können Sie die grafische Oberfläche über das Netzwerk nutzen.
+
+3. **VNC-Server einrichten und starten:**
+   ```bash
+   vncserver :1
+   ```
+   Startet eine neue VNC-Sitzung auf Display :1.
+
+**Erklärung der Befehle:**
+
+- `apt update`  
+  Aktualisiert die Paketlisten, damit Sie die neuesten Versionen installieren.
+
+- `apt install xfce4 xfce4-goodies`  
+  Installiert die XFCE-Desktopumgebung und zusätzliche Tools für eine komfortable Bedienung.
+
+- `apt install tightvncserver`  
+  Installiert einen VNC-Server, mit dem Sie die grafische Oberfläche auch von einem anderen Rechner aus nutzen können.
+
+- `vncserver :1`  
+  Startet eine VNC-Sitzung, die Sie mit einem VNC-Client von Ihrem PC aus aufrufen können.
+
+**Zusätzliche Optionen für mehr Sicherheit:**
+
+- **Firewall anpassen:**  
+  Öffnen Sie nur die Ports, die für den Fernzugriff auf die GUI benötigt werden, und beschränken Sie den Zugriff auf bestimmte IP-Adressen.
+
+- **VNC mit Passwort schützen:**  
+  Richten Sie ein starkes Passwort für den VNC-Zugang ein (`vncpasswd`).
+
+- **VNC über SSH-Tunnel nutzen:**  
+  Verbinden Sie sich per SSH-Tunnel mit dem VNC-Server, um die Verbindung zu verschlüsseln:
+  ```bash
+  ssh -L 5901:localhost:5901 benutzer@server
+  ```
+  Dann verbinden Sie Ihren VNC-Client mit `localhost:5901`.
+
+- **Nicht benötigte Programme deinstallieren:**  
+  Entfernen Sie nach der Installation der GUI alle Programme, die Sie nicht benötigen, um die Angriffsfläche klein zu halten.
+
+- **Automatisches Starten der GUI verhindern:**  
+  Starten Sie die grafische Oberfläche nur bei Bedarf und nicht automatisch beim Systemstart.
+
+Mit diesen Maßnahmen können Sie auch mit einer grafischen Oberfläche sicher arbeiten und das Risiko durch zusätzliche Software gering halten.
+
+---
+
+### Zusatzaufgabe 24a: xfce4-whiskermenu-plugin
+
+Wenn man neben Linux auch mit Windows arbeitet, ist es recht angenehm immer eine ähnliche Oberfläche zu haben.
+
+Da bereits xfce4 installiert ist, installieren Sie nun das `xfce4-whiskermenu-plugin`. Dieses Plugin ersetzt das Standard-Anwendungsmenü durch ein moderneres und übersichtlicheres Startmenü, das die Bedienung der grafischen Oberfläche deutlich komfortabler macht.
+
+Das Whisker-Menü bietet eine schnelle Suchfunktion, eine bessere Kategorisierung der Programme und eine anpassbare Favoritenliste. Gerade auf Systemen mit vielen installierten Anwendungen behalten Sie so leichter den Überblick und finden Programme schneller. Das Menü ist intuitiv bedienbar und lässt sich individuell anpassen, was die tägliche Arbeit am Desktop spürbar erleichtert.
+
+Ein übersichtliches und gut strukturiertes Menü hilft, versehentliche Fehlbedienungen zu vermeiden – zum Beispiel das unbeabsichtigte Starten von Systemtools oder sicherheitsrelevanten Programmen. Durch die Favoritenfunktion können Sie wichtige Programme gezielt hervorheben und weniger benötigte Anwendungen ausblenden. Außerdem können Sie das Menü so konfigurieren, dass nur bestimmte Nutzer Zugriff auf sensible Programme haben, was die Sicherheit zusätzlich erhöht.
+
+**Vorgehen (Beispiel):**
+
+Dazu ist gar nicht so viel notwendig. Den Anfang machen ein paar Downloads. Suchen Sie im Browser nach open desktop themes, gehen in der Trefferliste auf den Link zu OpenDesktop.org und nutzen die Suchfunktion der Web-Seite um das Win10 Icon Thema ihrer Wahl herunter zu laden.
+
+1. **Empfohlene Pakete Downloaden**
+[Desktop Theme](https://www.opendesktop.org/p/1230964/)
+[Icon Theme](https://www.opendesktop.org/p/1158349/)
+[Windows 10 Start Icon](http://www.rw-designer.com/icon-detail/18883)
+[Wallpaper](https://coolwallpapers.me/2511366-wallpaper-of-nature-hd.html)
+
+2. **Whisker-Menü-Plugin installieren:**
+   ```bash
+   apt install xfce4-whiskermenu-plugin
+   ```
+   Installiert das Plugin für das XFCE-Panel.
+
+3. **Plugin zum Panel hinzufügen:**  
+   Klicken Sie mit der rechten Maustaste auf das XFCE-Panel, wählen Sie „Panel“ → „Elemente hinzufügen“ und suchen Sie nach „Whisker-Menü“. Fügen Sie es hinzu und entfernen Sie ggf. das alte Anwendungsmenü.
+
+4. **Menü anpassen:**  
+   Sie können das Whisker-Menü nach Ihren Wünschen konfigurieren, z.B. Favoriten festlegen, Kategorien anpassen oder das Aussehen ändern.
+
+**Erklärung der Befehle:**
+
+- `apt install xfce4-whiskermenu-plugin`  
+  Installiert das Whisker-Menü-Plugin aus den offiziellen Paketquellen. Nach der Installation steht das neue Menü im XFCE-Panel zur Verfügung.
+
+---
+
+**Zusätzliche Optionen für mehr Sicherheit:**
+
+- **Panel-Sperre aktivieren:**  
+  Sperren Sie das Panel, damit nur autorisierte Nutzer Änderungen an den Menüs und Panel-Elementen vornehmen können.
+
+- **Programme ausblenden:**  
+  Blenden Sie sicherheitskritische oder administrative Programme im Menü aus, damit sie nicht versehentlich gestartet werden.
+
+- **Benutzerrechte einschränken:**  
+  Stellen Sie sicher, dass nur berechtigte Nutzer Programme mit erhöhten Rechten ausführen können (z.B. über `sudo`-Abfragen).
+
+- **Menü-Backup:**  
+  Exportieren Sie Ihre Menü-Konfiguration regelmäßig, um bei Problemen oder Manipulationen schnell den Ursprungszustand wiederherstellen zu können.
+
+Mit diesen Maßnahmen bleibt Ihre grafische Oberfläche übersichtlich, komfortabel und sicher.
 
 ---
 
