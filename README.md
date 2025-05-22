@@ -1,7 +1,7 @@
-﻿# PROXMOX Tool's - Ersteinrichtung VM/LXC
+﻿# PROXMOX Tools - Ersteinrichtung VM/LXC
 
 ## Allgemeine Informationen
-Dieses Skript automatisiert die Ersteinrichtung und Härtung von Linux- Servern. Es richtet sich speziell an die Nutzer von Proxmox-VMs/LXC, ist aber auch für Debian-Systeme geeignet.
+Dieses Skript automatisiert die Ersteinrichtung und Härtung von Linux-Servern. Es richtet sich speziell an die Nutzer von Proxmox-VMs/LXC, ist aber auch für Debian-Systeme geeignet.
 
 Ziel ist ein sicherer, wartbarer und sofort produktiver Serverbetrieb nach Abschluss der Erstinstallation und ausführung diese Skriptes.
 
@@ -10,24 +10,24 @@ Ziel ist ein sicherer, wartbarer und sofort produktiver Serverbetrieb nach Absch
 1. **Öffne ein Terminal** auf deinem Linux-System.
 
 2. **Wechsle in das gewünschte Verzeichnis** (z. B. ins Home-Verzeichnis):
-   ```bash
-   cd ~
-   ```
+```bash
+cd ~
+```
 
 3. **Lade das Skript von GitHub herunter:**  
-   ```bash
-   wget https://raw.githubusercontent.com/DirkGoetze/First-Run/refs/heads/main/scripts/first-run.sh
-   ```
+```bash
+wget https://raw.githubusercontent.com/DirkGoetze/First-Run/refs/heads/main/scripts/first-run.sh
+```
 
 4. **Mache das Skript ausführbar:**
-   ```bash
-   chmod +x first-run.sh
-   ```
+```bash
+chmod +x first-run.sh
+```
 
 5. **Starte das Skript mit Root-Rechten:**
-   ```bash
-   sudo ./first-run.sh
-   ```
+```bash
+sudo ./first-run.sh
+```
 
 **Hinweis:**  
 Beachte die Voraussetzungen für das Ausführen des Skript! Folge anschliessend den Anweisungen im Dialog-Menü, um die Ersteinrichtung abzuschließen.
