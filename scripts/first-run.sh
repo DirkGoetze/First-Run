@@ -1915,6 +1915,33 @@ DlgPromptSettings() {
     return $res
 }
 
+# ===========================================================================
+# Hauptprogramm
+# ===========================================================================
+# ---------------------------------------------------------------------------
+# Schritt-Auswahl-Dialog 
+# ---------------------------------------------------------------------------
+STEP_OPTIONS=$(dialog --output-fd 1 \
+  --backtitle "${APP_TITLE}" \
+  --title "Schritt-Auswahl" \
+  --checklist "Das Skript kann viele Einstellungen automatisch vornehmen. Welche Schritte sollen ausgeführt werden?\n(Mehrfachauswahl mit Leertaste)" 20 70 12 \
+  "update"      "Systemupdate" on \
+  "autoupdate"  "Automatische Updates" on \
+  "software"    "Empfohlene Software" on \
+  "keyboard"    "Tastatur-Layout" on \
+  "timezone"    "Zeitzone/Timeserver" on \
+  "adminuser"   "Administrativer Benutzer" on \
+  "hostname"    "Hostname setzen" on \
+  "ssh"         "SSH Login absichern" on \
+  "firewall"    "Firewall einrichten" on \
+  "loginprot"   "Login absichern (Fail2ban)" on \
+  "ddos"        "DDoS-Schutz" on \
+  "ipspoof"     "IP-Spoofing-Schutz" on \
+  "arpspoof"    "ARP-Spoofing-Schutz" on \
+  "prompt"      "Bash Prompt anpassen" on
+)
+dialog --clear
+
 # ---------------------------------------------------------------------------
 # System anpassen
 # ---------------------------------------------------------------------------
@@ -1925,31 +1952,59 @@ if [ $? -ne 0 ]; then exit; fi
 # Dialoge anzeigen und Funktionen aufrufen
 # ---------------------------------------------------------------------------
 # Dialog: Systemupdate einrichten
-ShowYesNoDlg 10 62 "${txTITLE01}" "${txSTP_0101}" SetSystemUpDate
+if [[ $STEP_OPTIONS == *update* ]]; then
+    ShowYesNoDlg 10 62 "${txTITLE01}" "${txSTP_0101}" SetSystemUpDate
+fi
 # Dialog: Automatisches Update einrichten
-ShowYesNoDlg 10 56 "${txTITLE02}" "${txSTP_0201}" SetAutoUpdate
+if [[ $STEP_OPTIONS == *autoupdate* ]]; then
+    ShowYesNoDlg 10 56 "${txTITLE02}" "${txSTP_0201}" SetAutoUpdate
+fi
 # Dialog: Software
-DlgRecommendedSoftware
+if [[ $STEP_OPTIONS == *software* ]]; then
+    DlgRecommendedSoftware
+fi
 # Dialog: Tastatur Layout anpassen
-ShowYesNoDlg 10 62 "${txTITLE04}" "${txSTP_0401}${txSTP_0001}" SetKeyboardLayout
+if [[ $STEP_OPTIONS == *keyboard* ]]; then
+    ShowYesNoDlg 10 62 "${txTITLE04}" "${txSTP_0401}${txSTP_0001}" SetKeyboardLayout
+fi
 # Dialog: Zeitzone / Timesever
-DlgTimeZone
+if [[ $STEP_OPTIONS == *timezone* ]]; then
+    DlgTimeZone
+fi
 # Dialog: Administativer Benutzer einrichten 
-ShowYesNoDlg 14 62 "${txTITLE06}" "${txSTP_0601}${txSTP_0602}$(GetAllUsers)\n${txSTP_0001}" SetAdminUser
+if [[ $STEP_OPTIONS == *adminuser* ]]; then
+    ShowYesNoDlg 14 62 "${txTITLE06}" "${txSTP_0601}${txSTP_0602}$(GetAllUsers)\n${txSTP_0001}" SetAdminUser
+fi
 # Dialog: Hostname setzen
-ShowYesNoDlg 17 60 "${txTITLE10}" "${txSTP_1001}${txSTP_0001}" SetHostname
+if [[ $STEP_OPTIONS == *hostname* ]]; then
+    ShowYesNoDlg 17 60 "${txTITLE10}" "${txSTP_1001}${txSTP_0001}" SetHostname
+fi
 # Dialog: SSH Login absichern
-DlgSshLogin
+if [[ $STEP_OPTIONS == *ssh* ]]; then
+    DlgSshLogin
+fi
 # Dialog: Firewall
-DlgFirewallConfig
+if [[ $STEP_OPTIONS == *firewall* ]]; then
+    DlgFirewallConfig
+fi
 # Dialog: Login absichern
-DlgLoginProtection
+if [[ $STEP_OPTIONS == *loginprot* ]]; then
+    DlgLoginProtection
+fi
 # Dialog: Ddos Protection einrichten
-ShowYesNoDlg 18 70 "${txTITLE11}" "${txSTP_1101}" SetDdosProtection
+if [[ $STEP_OPTIONS == *ddos* ]]; then
+    ShowYesNoDlg 18 70 "${txTITLE11}" "${txSTP_1101}" SetDdosProtection
+fi
 # Dialog: IpSpoofing Protection einrichten
-ShowYesNoDlg 18 70 "${txTITLE12}" "${txSTP_1201}" SetIpSpoofingProtection
+if [[ $STEP_OPTIONS == *ipspoof* ]]; then
+    ShowYesNoDlg 18 70 "${txTITLE12}" "${txSTP_1201}" SetIpSpoofingProtection
+fi
 # Dialog: ArpSpoofing Protection einrichten
-ShowYesNoDlg 15 62 "${txTITLE13}" "${txSTP_1301}" SetArpSpoofingProtection
+if [[ $STEP_OPTIONS == *arpspoof* ]]; then
+    ShowYesNoDlg 15 62 "${txTITLE13}" "${txSTP_1301}" SetArpSpoofingProtection
+fi
 # Dialog: Bash Prompt anpassen
-DlgPromptSettings
+if [[ $STEP_OPTIONS == *prompt* ]]; then
+    DlgPromptSettings
+fi
 # ---------------------------------------------------------------------------
