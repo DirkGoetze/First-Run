@@ -16,7 +16,7 @@ Ziel ist ein sicherer, wartbarer und sofort produktiver Serverbetrieb nach Absch
 
 3. **Lade das Skript von GitHub herunter:**  
    ```bash
-   wget https://github.com/DirkGoetze/First-Run/main/first-run.sh
+   wget https://raw.githubusercontent.com/DirkGoetze/First-Run/refs/heads/main/scripts/first-run.sh
    ```
 
 4. **Mache das Skript ausführbar:**
@@ -47,3 +47,6 @@ muss installiert sein (wird jedoch bei Bedarf automatisch nach installiert).
 * Schutz des Logins (CLI/SSH) durch Fail2ban.
 * Aktivierung von DDoS-, IP-Spoofing- und ARP-Spoofing-Schutzmechanismen.
 * Anpassung des Bash-Prompts für Benutzer (farbig, informativ).
+
+## Fehler Analyse und Behebung
+Alle Änderungen an den Einstellungen werden in einer Logdatei aufgezeichnet. Der Dateinamen folgt dabei dem Muster 'YYYY-MM-DD_first-run.log'. Dabei wird immer das aktuelle Datum verwendendet.

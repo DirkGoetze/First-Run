@@ -1556,11 +1556,11 @@ ShowYesNoDlg() {
     # -----------------------------------------------------------------------
     
     # Parameter prüfen ------------------------------------------------------
+    local res=1
     if [ -z "$1" ] || [ -z "$2" ] || [ -z "$3" ] || [ -z "$4" ] || [ -z "$5" ]
-    then return 1; fi
+    then return $res; fi
 
     # Dialog vorbereiten ----------------------------------------------------
-    local res=1
     local lvDialog=dialog
     local lvLines="$1"
     local lvWidth="$2"
@@ -1578,6 +1578,9 @@ ShowYesNoDlg() {
         LOG "Nicht erlaubte Callback-Funktion: $lvCallbackFnk"
         return 3
     fi
+
+    # LOG Titel und Schritt-ID ----------------------------------------------
+    LOG "${txTITLE00}${StepID}${lvTitle}"
 
     # Dialog anzeigen -------------------------------------------------------
     $lvDialog \
@@ -1598,13 +1601,14 @@ ShowYesNoDlg() {
             # Funktion mit allen übergebenen Parametern aufrufen ------------
             "$lvCallbackFnk" "${lvCallbackArgs[@]}"
             res=$?
+            LOG "Callback-Funktion '$lvCallbackFnk' - Return-Code: $res"
         else
             LOG "Callback-Funktion '$lvCallbackFnk' nicht gefunden"
             res=2
         fi
     else
         # Schritt beenden ---------------------------------------------------
-        LOG "Dialog abgebrochen oder Nein gedrückt"
+        LOG "Dialog abgebrochen oder Nein gedrückt - Return-Code: $lvAnswer"
         res=1 # return-code 1 : Schritt abgebrochen
     fi
 
@@ -1924,7 +1928,7 @@ DlgPromptSettings() {
 STEP_OPTIONS=$(dialog --output-fd 1 \
   --backtitle "${APP_TITLE}" \
   --title "Schritt-Auswahl" \
-  --checklist "Das Skript kann viele Einstellungen automatisch vornehmen. Welche Schritte sollen ausgeführt werden?\n(Mehrfachauswahl mit Leertaste)" 20 70 12 \
+  --checklist "Das Skript kann viele Einstellungen automatisch vornehmen. Welche Schritte sollen ausgeführt werden?\n(Mehrfachauswahl mit Leertaste)" 19 70 10 \
   "update"      "Systemupdate" on \
   "autoupdate"  "Automatische Updates" on \
   "software"    "Empfohlene Software" on \
@@ -1948,6 +1952,7 @@ dialog --clear
 StepID=1
 CheckPrepared             # Ausführung als root, Dialog installiert
 if [ $? -ne 0 ]; then exit; fi
+
 # ---------------------------------------------------------------------------
 # Dialoge anzeigen und Funktionen aufrufen
 # ---------------------------------------------------------------------------
@@ -2007,4 +2012,6 @@ fi
 if [[ $STEP_OPTIONS == *prompt* ]]; then
     DlgPromptSettings
 fi
+# Bildschirm löschen --------------------------------------------------------
+clear
 # ---------------------------------------------------------------------------
