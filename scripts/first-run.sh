@@ -35,22 +35,10 @@ YES_LABEL="OK"
 CANCEL_LABEL="Abbrechen"
 
 # Text Konstanten: Fenstertitel
-txTITLE00="< Schritt "
-txTITLE01=" - System aktualisieren >"
-txTITLE02=" - Automatische Updates >"
-txTITLE03=" - Empfohlen Software >"
-txTITLE04=" - Spracheinstellung >"
-txTITLE05=" - Zeitzone/Synchronisation >"
-txTITLE06=" - Administrativer Benutzer >"
-txTITLE07=" - SSH Login absichern >"
-txTITLE08=" - Firewall installieren/aktivieren >"
-txTITLE09=" - Login absichern >"
-txTITLE10=" - Hostname vergeben >"
-txTITLE11=" - DDoS-Schutz aktivieren >"
-txTITLE12=" - IP-Spoofing-Schutz aktivieren >"
-txTITLE13=" - ARP-Spoofing-Schutz aktivieren >"
+txTITLE_00="< Schritt "
 
 # Text Konstanten: Fehlertexte ----------------------------------------------
+txERR_0000="Script mit 'root' Rechten gestartet"
 txERR_0001="FEHLER: Nicht ausreichende Benutzerrechte"
 txERR_0002="Versuchen Sie das Script erneut mit 'root' Rechten auszuführen (sudo)"
 txERR_0003="FEHLER: Fehlende Software, 'dialog' wird benötigt"
@@ -71,6 +59,7 @@ txLOG_0004="' nicht installiert"
 
 # Schritttexte
 # Step 1: Update System -----------------------------------------------------
+txTITLE_01=" - System aktualisieren >"
 txSTP_0101="\nPaketquellen und Paketlisten sind wichtig um das System sicher und stabil zu halten.\n\nEine Aktualisierung jetzt vornehmen?\n"
 txLOG_0100="Abbruch - System nicht aktualisiert"
 txLOG_0101="Paketquellen aktualisiert"
@@ -81,6 +70,7 @@ txLOG_0105="Nicht mehr benötigte Pakete gelöscht"
 txLOG_0106="Fehler - Nicht mehr benötigte Pakete nicht gelöscht"
 
 # Step 2: Automatisches Update einrichten -----------------------------------
+txTITLE_02=" - Automatische Updates >"
 txSTP_0201="\nServer Systeme laufen meist 24/7. Um das System automatisch aktuell zu halten, kann das Programm einen 'cronjob' zur Aktualisierung des System anlegen.\n"
 txPART0201="\nAn welchem Wochentag soll das automatische Update starten?\n" 
 txPART0202="\nUm welche Uhrzeit soll das automatische Update gestartet werden?\n" 
@@ -90,6 +80,7 @@ txLOG_0203="Abbruch - Cron Job Einrichtung durch Nutzer abgebrochen oder Cron Jo
 txLOG_0204="Abbruch - Cron Job Einrichtung durch Nutzer abgebrochen"
 
 # Step 3: Empfohlene Software Pakete installieren ---------------------------
+txTITLE_03=" - Empfohlen Software >"
 txSTP_0301="\nUm die Bedienung zu erleichtern, wird empfohlen, einige Softwarepakete zu installieren.\nBitte ankreuzen, welche Software verwendet werden soll.\n"
 txPART0301="Empfohlene Software installieren"
 txPART0302="Installiere '"
@@ -98,6 +89,7 @@ txPART0304="Software Installation abgeschlossen"
 txLOG_0300="Abbruch - Empfohlen Software nicht installiert"
 
 # Step 4: Tastatuslayout anpassen -------------------------------------------
+txTITLE_04=" - Spracheinstellung >"
 txSTP_0401="\nDas Tastatur Layout ist wichtig. Nichts ist schlimmer, als ein Backslash oder einen Doppelpunkt auf der Tastatur zu suchen.\n"
 txLOG_0400="Abbruch - Tastatur Layout nicht geändert"
 txLOG_0401="Aktivierte Locales:"
@@ -105,6 +97,7 @@ txLOG_0402="Aktuelle System-Locale:"
 txLOG_0403="Fehler - Tastatur Layout nicht geändert"
 
 # Step 5: Zeitzone/Time Server einrichten -----------------------------------
+txTITLE_05=" - Zeitzone/Synchronisation >"
 txSTP_0501="\nServerdienste sind meistens zeitkritisch. Es ist also wichtig, das der Server immer die richtige Zeit kennt.\nSie können die Zeitzone anpassen und den 'ntp' Dienst installieren?\n"
 txPART0502="Einstellungen vornehmen ..."
 txPART0503="Zeitzone auf '"
@@ -118,6 +111,7 @@ txLOG_0502="' gesetzt"
 txLOG_0503="Fehler - Zeitzone nicht geändert" 
 
 # Step 6: Adminstrativer Benutzer anlegen -----------------------------------
+txTITLE_06=" - Administrativer Benutzer >"
 txSTP_0601="\nEs wird nicht empfohlen, als 'root' auf einem System zu arbeiten. Sollte noch kein administativer User angelegt worden sein, legen Sie jetzt einen an.\n"
 txSTP_0602="\nAktuell gibt es auf dem System die folgenden User:\n"
 txPART0601="\nGeben Sie einen Benutzernamen, ein Passwort und den vollständigen Namen des Nutzer an!\n"
@@ -145,6 +139,7 @@ txLOG_0605="' erfolgreich angelegt und der Gruppe 'sudo' zugeordnet."
 txLOG_0606="Abbruch - Dialog Dateneingabe abgebrochen"
 
 # Step 7: SSH Login absichern -----------------------------------------------
+txTITLE_07=" - SSH Login absichern >"
 txSTP_0701="\nUm eine 'ssh' Verbindung abzusichern, kann ein 'root' Login unterbunden, eine Authentifizierung mit 'pulic key' statt Username/Passwort gefordert und die Sitzung automatisch beendet werden.\n"
 txSTP_0702="\nWelche dieser Absicherungen wollen Sie vornehmen?\n"
 txSTP_0703="\nWelcher Nutzer soll einen Zugang per 'ssh' eingerichtet bekommen!\n"
@@ -168,6 +163,7 @@ txLOG_0700="Abbruch - 'ssh' Zugang nicht abgesichert"
 txLOG_0701="Abbruch - Dialog SSH-User Auswahl abgebrochen"
 
 # Step 8: Firewall einrichten -----------------------------------------------
+txTITLE_08=" - Firewall installieren/aktivieren >"
 txSTP_0801="\nServer kommunizieren per UDP- oder TCP-Protokoll und Ports. Ungenutzte offene Ports sind oft eine Ursache für unsichere Syteme. Eine Firewall ist daher wichtig, um den Server abzusichern.\n"
 txSTP_0802="\nDie Firewall jetzt aktivieren und je nach angebotenen Service, Auswahl der erreichbaren Ports.\n"
 txPART0801="Firewall installieren/einrichten ..."
@@ -184,6 +180,7 @@ txLOG_0801="\nDie Firewall wurde auf diesem System erfolgreich aktiviert!"
 txLOG_0802="\nFolgende Ports geöffnet:"
 
 # Step 9: Login absichern ---------------------------------------------------
+txTITLE_09=" - Login absichern >"
 txSTP_0901="\nUm Ihr System abzusichern, kann jeder wiederholt fehlgeschlagene Anmeldeversuche automatisch zur Sperrung der betreffenden IP-Adresse fuehren.\n\nDiese Schutzfunktion jetzt aktivieren?\n"
 txPART0901="Einstellungen vornehmen ..."
 txPART0902="Login '"
@@ -195,6 +192,7 @@ txLOG_0902="' erfolgreich eingerichtet"
 txLOG_0903="' fehlgeschlagen"
 
 # Step 10: Hostname vergeben ------------------------------------------------
+txTITLE_10=" - Hostname vergeben >"
 txSTP_1001="\nEin Hostname sollte eingerichtet werden, weil er den Rechner im Netzwerk eindeutig identifiziert.\n\nDas erleichtert die Verwaltung, das Auffinden und die Kommunikation zwischen den Rechnern.\n\nEin sinnvoller Hostname verbessert Struktur, Zuordnung und Sicherheit – besonders in Netzwerken mit mehreren Systemen.\n"
 txPART1001="\nAktuell sind folgende Hostnamen auf dem System eingerichtet:\n---------------------------- IPv4 ----------------------------"
 txPART1002="\nNetzwerkkarte: "
@@ -216,6 +214,7 @@ txLOG_1002="Hostname (IPv6) geändert von "
 txLOG_1003=" zu "
 
 # Step 11: DDoS-Schutz aktivieren -----------------------------------------
+txTITLE_11=" - DDoS-Schutz aktivieren >"
 txSTP_1101="\nDDoS-Angriffe (Distributed Denial of Service) legen Server durch massenhafte Anfragen oder Verbindungsversuche lahm.\n\nDurch die folgenden Einstellungen wird Ihr System wirksam gegen typische DDoS-Angriffe auf Netzwerkebene abgesichert.\n\n- Paket- und Verbindungs-Limits\n- Schutz vor Verbindungsfluten (Floods)\n- Blockieren verdächtiger Pakete\n- Aktivierung von Kernel-Schutzmechanismen\n\nDDoS-Schutz jetzt aktivieren?\n"
 txPART1100="DDoS-Schutz wird aktiviert..."
 txPART1101="Ungültige Verbindungen verwerfen..."
@@ -242,6 +241,7 @@ txLOG_1109="DDoS: Flood-Schutz für SSH/HTTP/HTTPS gesetzt"
 txLOG_1110="DDoS: Kernel-Schutzmechanismen aktiviert"
 
 # Step 12: IP-Spoofing-Schutz aktivieren ------------------------------------
+txTITLE_12=" - IP-Spoofing-Schutz aktivieren >"
 txSTP_1201="\nIP Spoofing bezeichnet das Fälschen von IP-Adressen, um sich unberechtigt Zugriff auf ein System zu verschaffen oder Angriffe zu verschleiern.\n\nMit den folgenden Einstellungen wird Ihr System gegen typische IP-Spoofing-Angriffe auf Netzwerkebene geschützt:\n\n- Aktivierung von Reverse Path Filtering\n- Blockieren von Paketen mit ungültigen Quelladressen\n- Stärkung der Kernel-Netzwerkoptionen\n\nIP-Spoofing-Schutz jetzt aktivieren?\n"
 txPART1200="IP-Spoofing-Schutz wird aktiviert..."
 txPART1201="Reverse Path Filtering aktivieren..."
@@ -254,6 +254,7 @@ txLOG_1202="IP-Spoofing: Pakete mit ungültigen Quelladressen geblockt"
 txLOG_1203="IP-Spoofing: Kernel-Netzwerkoptionen gesetzt"
 
 # Step 13: ARP-Spoofing-Schutz aktivieren -----------------------------------
+txTITLE_13=" - ARP-Spoofing-Schutz aktivieren >"
 txSTP_1301="\nARP Spoofing ist ein Angriff, bei dem gefälschte ARP-Antworten ins Netzwerk gesendet werden, um den Datenverkehr umzuleiten oder mitzulesen.\n\nDurch das Setzen statischer ARP-Einträge für wichtige Netzwerkkomponenten kann dieser Angriff erschwert werden.\n\nMöchten Sie jetzt einen statischen ARP-Eintrag für Ihre Netzwerkkarte einrichten?\n"
 txPART1301="ARP-Spoofing-Schutz wird aktiviert..."
 txPART1302="Netzwerkinformationen werden ermittelt..."
@@ -266,6 +267,18 @@ txLOG_1302="ARP-Spoofing: Netzwerkinformationen ermittelt"
 txLOG_1303="ARP-Spoofing: ARP-Skript vorbereitet"
 txLOG_1304="ARP-Spoofing: Skript erstellt"
 txLOG_1305="ARP-Spoofing: Skript ausführbar gemacht"
+
+# Step 14: Prompt anpassen --------------------------------------------------
+txTITLE_14=" - Bash Prompt anpassen >" 
+txSTP_1401="\nEin ansprechender und informativer Bash-Prompt kann die Arbeit am Server erleichtern.\n\nMöchten Sie den Prompt für alle Benutzer anpassen?\n"
+txPART1403="Prompt-Konfiguration wird systemweit in /etc/bash.bashrc eingetragen (ersetzen)..."
+txPART1404="Prompt-Konfiguration wird für neue User in /etc/skel/.bashrc eingetragen (ersetzen)..."
+txPART1405="Prompt-Anpassung systemweit abgeschlossen."
+
+txLOG_1401="Abbruch - Prompt-Anpassung nicht durchgeführt"
+txLOG_1402="Prompt-Anpassung: Backup der /etc/bash.bashrc erstellt"
+txLOG_1403="Prompt-Anpassung: Prompt-Konfiguration systemweit ersetzt"
+txLOG_1404="Prompt-Anpassung: Prompt-Konfiguration für neue User ersetzt"
 
 # Vorgaben
 # Farbe fuer die Ausgabe einstellen
@@ -281,16 +294,57 @@ TIMEZONE="Europe/Berlin" # Zeitzone
 # ===========================================================================
 LOG() {
     # -----------------------------------------------------------------------
-    # Hilfsfunktion zur Erzeugung eines einfachen log
+    # Hilfsfunktion zur Erzeugung eines einfachen log mit Rotation und Komprimierung
     # -----------------------------------------------------------------------
-    # Log Eintrag vorbereiten -----------------------------------------------
-    local DateTimeStr=$(date "+%Y-%m-%d %H:%M:%S")
-    local LOG_FILE="$(date "+%Y-%m-%d")_$(basename "$0" .sh).log"    
-    # Log Datei anlegen, wenn noch nicht vorhanden --------------------------
-    if [ ! -f ${LOG_FILE} ]; then touch ${LOG_FILE}; fi
-    # Log Eintrag erstellen -------------------------------------------------
-    if [ -z "$1" ]; then echo "" >> ${LOG_FILE}
-    else echo "${DateTimeStr}"    "$1" >> ${LOG_FILE}; fi
+    local LOG_PATH
+
+    # Automatische Ermittlung des Log-Verzeichnisses ------------------------
+    if [ -d "/var/log" ]; then
+        LOG_PATH="/var/log"
+    elif [ -d "/tmp" ]; then
+        LOG_PATH="/tmp"
+    else
+        LOG_PATH="."
+    fi
+
+    local LOG_FILE="${LOG_PATH}/$(date "+%Y-%m-%d")_$(basename "$0" .sh).log"
+    local MAX_ROTATE=5
+
+    # Nur rotieren, wenn KEIN Text übergeben wird (LOG INIT) ----------------
+    if [ -z "$1" ]; then
+        # Logrotation und Komprimierung -------------------------------------
+        # 1. Älteste Logdatei löschen ---------------------------------------
+        if [ -f "${LOG_FILE}.${MAX_ROTATE}.gz" ]; then
+            rm -f "${LOG_FILE}.${MAX_ROTATE}.gz"
+        fi
+        # .4.gz -> .5.gz, .3.gz -> .4.gz, ..., .2.gz -> .3.gz ---------------
+        for ((i=MAX_ROTATE-1; i>=2; i--)); do
+            if [ -f "${LOG_FILE}.${i}.gz" ]; then
+                mv "${LOG_FILE}.${i}.gz" "${LOG_FILE}.$((i+1)).gz"
+            fi
+        done
+        # .1 -> .2.gz (komprimieren) ----------------------------------------
+        if [ -f "${LOG_FILE}.1" ]; then
+            gzip -c "${LOG_FILE}.1" > "${LOG_FILE}.2.gz"
+            rm -f "${LOG_FILE}.1"
+        fi
+        # Aktive Logdatei -> .1 (rotieren) ----------------------------------
+        if [ -f "${LOG_FILE}" ]; then
+            mv "${LOG_FILE}" "${LOG_FILE}.1"
+        fi
+        # Neue leere Logdatei anlegen, falls nicht vorhanden ----------------
+        if [ ! -f "${LOG_FILE}" ]; then
+            touch "${LOG_FILE}" || return 1
+        fi
+        # Logdatei mit aktuellem Datum und Skriptnamen anlegen --------------
+        echo "" >> "${LOG_FILE}"
+    else
+        # Nur Eintrag schreiben, keine Rotation -----------------------------
+        if [ ! -f "${LOG_FILE}" ]; then
+            touch "${LOG_FILE}" || return 1
+        fi
+        echo "$(date "+%Y-%m-%d %H:%M:%S") $1" >> "${LOG_FILE}"
+    fi
 }
 CheckIsInstalled() {
     # -----------------------------------------------------------------------
@@ -341,6 +395,9 @@ CheckPrepared() {
         LOG "${txERR_0001}" 
         # Script beenden ----------------------------------------------------
         return 1
+    else
+        # Log Eintrag der Prüfung -------------------------------------------
+        LOG "${txERR_0000}"
     fi
     # Installation von benötigter Software prüfen ---------------------------
     CheckIsInstalled 'dialog'
@@ -396,13 +453,14 @@ CheckTimeZone() {
         return 1                                       # Zone nicht gesetzt
     fi
 }
-GetAllUsers()
-{
+GetUserList() {
     # -----------------------------------------------------------------------
-    # Hilfsfunktion zum Auslesen aller aktuellen User
+    # Gibt eine Liste aller regulären Benutzer (UID >= 1000) mit Home-Verzeichnis zurück
+    # Optional: root kann mit ausgegeben werden, wenn $1="withroot" übergeben wird
+    # Ergebnis: Zeilenweise Ausgabe "username:home"
     # -----------------------------------------------------------------------
-    local userlist=$(cat /etc/passwd | grep home | cut -d : -f1 &&  cat /etc/passwd | grep root  | cut -d : -f1)
-    echo "$userlist"
+    local include_root="$1"
+    awk -F: -v root="$include_root" '($3 >= 1000 && $6 ~ /^\//) || (root=="withroot" && $1=="root") {print $1":"$6}' /etc/passwd
 }
 SetStrLower() {
     # -----------------------------------------------------------------------
@@ -697,7 +755,7 @@ SetAutoUpdate() {
     # Dialog zum Wochentag anzeigen -----------------------------------------
     DayOfWeek=$(dialog --output-fd 1 \
         --backtitle "${APP_TITLE}" \
-        --title "${txTITLE00}${StepID}${txTITLE02}" \
+        --title "${txTITLE_00}${StepID}${txTITLE_02}" \
         --yes-label "${YES_LABEL}" \
         --cancel-label "${CANCEL_LABEL}" \
         --radiolist "${txPART0201}${txSTP_0002}" \
@@ -718,7 +776,7 @@ SetAutoUpdate() {
         # Dialog zur Uhrzeit anzeigen ---------------------------------------
         TimeOfUpdate=$(dialog --output-fd 1 \
             --backtitle "${APP_TITLE}" \
-            --title "${txTITLE00}${StepID}${txTITLE02}" \
+            --title "${txTITLE_00}${StepID}${txTITLE_02}" \
             --yes-label "${YES_LABEL}" \
             --cancel-label "${CANCEL_LABEL}" \
             --timebox "${txPART0202}${txSTP_0003}" \
@@ -870,7 +928,7 @@ SetAdminUser() {
     # Benutzername, Passwort und Vollständigen Namen abfragen ---------------
     USER_INPUTS=$(dialog --output-fd 1 \
         --backtitle "${APP_TITLE}" \
-        --title "${txTITLE00}${StepID}${txTITLE06}" \
+        --title "${txTITLE_00}${StepID}${txTITLE_06}" \
         --yes-label "${YES_LABEL}" \
         --cancel-label "${CANCEL_LABEL}" \
         --form "${txPART0601}${txSTP_0004}" \
@@ -1451,40 +1509,25 @@ SetArpSpoofingProtection() {
     clear
     return 0
 }
-SetPromptForUser() {
+SetPrompt() {
     # -----------------------------------------------------------------------
-    # Prompt-Anpassung für einen bestimmten User vornehmen
-    # Übergabe: $1 = Benutzername
+    # Prompt-Anpassung systemweit und für alle neuen User vornehmen
     # -----------------------------------------------------------------------
     local DIALOG=dialog
-    local TARGET_USER="$1"
-    local TARGET_HOME
-    TARGET_HOME=$(getent passwd "$TARGET_USER" | cut -d: -f6)
-    local BASHRC="$TARGET_HOME/.bashrc"
-
-    txPRART1402="Backup der aktuellen .bashrc von $TARGET_USER wird erstellt..."
-    txPRART1403="Prompt-Konfiguration wird in .bashrc von $TARGET_USER eingetragen (ersetzen)..."
-    txPRART1404="Prompt-Konfigurationsdatei .bashrc dem Nutzer $TARGET_USER wieder zuweisen ..."
-    txPRART1405="Prompt-Anpassung für $TARGET_USER abgeschlossen."
-
-    txLOG_1402="Prompt-Anpassung: Backup der .bashrc von $TARGET_USER erstellt"
-    txLOG_1403="Prompt-Anpassung: Prompt-Konfiguration für $TARGET_USER ersetzt"
-
+    # Dialog vorbereiten ----------------------------------------------------
     (
         echo "20"
-        echo "XXX"; echo "$txPRART1402"; echo "XXX"
-        if [ -f "$BASHRC" ]; then
-            if cp "$BASHRC" "$BASHRC.bak" 2>/dev/null; then
+        echo "XXX"; echo "$txPART1402"; echo "XXX"
+        if [ -f "/etc/bash.bashrc" ]; then
+            if cp "/etc/bash.bashrc" "/etc/bash.bashrc.bak" 2>/dev/null; then
                 LOG "${txLOG_1402} (OK)"
             else
                 LOG "${txLOG_1402} (FEHLER)"
             fi
-        else
-            LOG "${txLOG_1402} (Keine .bashrc vorhanden, kein Backup erstellt)"
         fi
 
         echo "60"
-        echo "XXX"; echo "$txPRART1403"; echo "XXX"
+        echo "XXX"; echo "$txPART1403"; echo "XXX"
         PROMPT_BLOCK="
 # Angepasster, farbiger Bash-Prompt (automatisch gesetzt)
 if [ -z \"\${debian_chroot:-}\" ] && [ -r /etc/debian_chroot ]; then
@@ -1515,31 +1558,41 @@ case \"\$TERM\" in
         ;;
 esac
 "
-        # Vorhandene Prompt-Block(s) entfernen und neuen Prompt-Block einfügen
-        if sudo -u "$TARGET_USER" bash -c "
+        # Prompt-Block in /etc/bash.bashrc ersetzen oder anhängen
+        awk '
+            BEGIN {skip=0}
+            /^# Angepasster, farbiger Bash-Prompt \(automatisch gesetzt\)/ {skip=1}
+            skip && /^esac/ {skip=0; next}
+            !skip {print}
+        ' "/etc/bash.bashrc" > "/etc/bash.bashrc.tmp"
+        echo "$PROMPT_BLOCK" >> "/etc/bash.bashrc.tmp"
+        mv "/etc/bash.bashrc.tmp" "/etc/bash.bashrc"
+        LOG "${txLOG_1403} (OK)"
+
+        echo "80"
+        echo "XXX"; echo "$txPART1404"; echo "XXX"
+        # Prompt-Block in /etc/skel/.bashrc ersetzen oder anhängen
+        if [ -f "/etc/skel/.bashrc" ]; then
+            cp "/etc/skel/.bashrc" "/etc/skel/.bashrc.bak" 2>/dev/null
             awk '
                 BEGIN {skip=0}
                 /^# Angepasster, farbiger Bash-Prompt \(automatisch gesetzt\)/ {skip=1}
                 skip && /^esac/ {skip=0; next}
                 !skip {print}
-            ' \"$BASHRC.bak\" > \"$BASHRC.tmp\" && \
-            echo \"$PROMPT_BLOCK\" >> \"$BASHRC.tmp\" && \
-            mv \"$BASHRC.tmp\" \"$BASHRC\"
-        " 2>/dev/null; then
-            LOG "${txLOG_1403} (OK)"
+            ' "/etc/skel/.bashrc.bak" > "/etc/skel/.bashrc.tmp"
+            echo "$PROMPT_BLOCK" >> "/etc/skel/.bashrc.tmp"
+            mv "/etc/skel/.bashrc.tmp" "/etc/skel/.bashrc"
+            LOG "${txLOG_1404} (OK)"
         else
-            LOG "${txLOG_1403} (FEHLER)"
+            echo "$PROMPT_BLOCK" >> "/etc/skel/.bashrc"
+            LOG "${txLOG_1404} (neu angelegt)"
         fi
 
-        echo "80"
-        echo "XXX"; echo "$txPRART1404"; echo "XXX"
-        sudo chown "$TARGET_USER":"$TARGET_USER" "$BASHRC" 2>/dev/null
-
         echo "100"
-        echo "XXX"; echo "$txPRART1405"; echo "XXX"
+        echo "XXX"; echo "$txPART1405"; echo "XXX"
         sleep 2
     ) |
-    $DIALOG --backtitle "${APP_TITLE}" --title "Bash Prompt anpassen ($TARGET_USER)" --gauge "Prompt wird angepasst..." 8 62
+    $DIALOG --backtitle "${APP_TITLE}" --title "Bash Prompt systemweit anpassen" --gauge "Prompt wird angepasst..." 8 62
     $DIALOG --clear
     clear
     return 0
@@ -1580,12 +1633,12 @@ ShowYesNoDlg() {
     fi
 
     # LOG Titel und Schritt-ID ----------------------------------------------
-    LOG "${txTITLE00}${StepID}${lvTitle}"
+    LOG "${txTITLE_00}${StepID}${lvTitle}"
 
     # Dialog anzeigen -------------------------------------------------------
     $lvDialog \
         --backtitle "${APP_TITLE}" \
-        --title "${txTITLE00}${StepID}${lvTitle}" \
+        --title "${txTITLE_00}${StepID}${lvTitle}" \
         --yes-label "${YES_LABEL}" \
         --no-label "${CANCEL_LABEL}" \
         --yesno "${lvMessage}" \
@@ -1627,11 +1680,11 @@ DlgRecommendedSoftware() {
     # -----------------------------------------------------------------------
     # Dialog: Empfohlene Software installieren
     # -----------------------------------------------------------------------
-    LOG "${txTITLE00}${StepID}${txTITLE03}"
+    LOG "${txTITLE_00}${StepID}${txTITLE_03}"
     # Dialog anzeigen -------------------------------------------------------
     SelectedSoftware=$(dialog --output-fd 1\
       --backtitle "${APP_TITLE}" \
-      --title "${txTITLE00}${StepID}${txTITLE03}" \
+      --title "${txTITLE_00}${StepID}${txTITLE_03}" \
       --yes-label "${YES_LABEL}" \
       --cancel-label "${CANCEL_LABEL}" \
       --checklist "${txSTP_0301}${txSTP_0002}" \
@@ -1665,12 +1718,12 @@ DlgTimeZone() {
     # -----------------------------------------------------------------------
     # Dialog: Zeitzone und Synchronisation
     # -----------------------------------------------------------------------
-    LOG "${txTITLE00}${StepID}${txTITLE05}"
+    LOG "${txTITLE_00}${StepID}${txTITLE_05}"
     # Dialog anzeigen -------------------------------------------------------
     # TODO: stdout anpassen
     SelectedTimeZone=$(dialog  --output-fd 1\
       --backtitle "${APP_TITLE}" \
-      --title "${txTITLE00}${StepID}${txTITLE05}" \
+      --title "${txTITLE_00}${StepID}${txTITLE_05}" \
       --yes-label "${YES_LABEL}" \
       --cancel-label "${CANCEL_LABEL}" \
       --checklist "${txSTP_0501}${txSTP_0002}" \
@@ -1700,11 +1753,11 @@ DlgSshLogin() {
     # -----------------------------------------------------------------------
     # Dialog: SSH Login absichern
     # -----------------------------------------------------------------------
-    LOG "${txTITLE00}${StepID}${txTITLE07}"
+    LOG "${txTITLE_00}${StepID}${txTITLE_07}"
     # Dialog Optionen anzeigen ----------------------------------------------
     SSH_OPTIONS=$(dialog --output-fd 1\
       --backtitle "${APP_TITLE}" \
-      --title "${txTITLE00}${StepID}${txTITLE07}" \
+      --title "${txTITLE_00}${StepID}${txTITLE_07}" \
       --yes-label "${YES_LABEL}" \
       --cancel-label "${CANCEL_LABEL}" \
       --checklist "${txSTP_0701}${txSTP_0702}${txSTP_0002}" \
@@ -1719,32 +1772,29 @@ DlgSshLogin() {
     if [ $antwort = 0 ] 
     then
         # Dialog User Auswahl vorbereiten -----------------------------------
-        local userlist=$(GetAllUsers)
+        local userlist=$(GetUserList | cut -d: -f1)
         local lstOptions=""
         local lstHeight=12
         i=0
         for item in $userlist
         do
-            if [ $item != "root" ]
-            then
-                local lcUser="$(getent passwd $item | awk -F: '{print $1}')"
-                local lcDesc="$(getent passwd $item | awk -F: '{print $5}')"
-                local lcStat="$(if [ $i = 0 ]; then echo "on"; else echo "off"; fi)"
-                lstOptions[$i]="$lcUser"
-                i=$(expr $i + 1)
-                lstOptions[$i]="$lcDesc"
-                i=$(expr $i + 1)
-                lstOptions[$i]="$lcStat"
-                i=$(expr $i + 1)
-                if [ $lstHeight -lt 19 ]; then
-                    lstHeight=$(expr $lstHeight + 1)
-                fi
+            local lcUser="$(getent passwd $item | awk -F: '{print $1}')"
+            local lcDesc="$(getent passwd $item | awk -F: '{print $5}')"
+            local lcStat="$(if [ $i = 0 ]; then echo "on"; else echo "off"; fi)"
+            lstOptions[$i]="$lcUser"
+            i=$(expr $i + 1)
+            lstOptions[$i]="$lcDesc"
+            i=$(expr $i + 1)
+            lstOptions[$i]="$lcStat"
+            i=$(expr $i + 1)
+            if [ $lstHeight -lt 19 ]; then
+                lstHeight=$(expr $lstHeight + 1)
             fi
         done 
         # Dialog Userauswahl anzeigen ---------------------------------------
         SSH_USER=$( dialog --output-fd 1 \
           --backtitle "${APP_TITLE}" \
-          --title "${txTITLE00}${StepID}${txTITLE06}" \
+          --title "${txTITLE_00}${StepID}${txTITLE_06}" \
           --radiolist "${txSTP_0703}${txSTP_0002}" $lstHeight 62 4 \
           "${lstOptions[@]}" ) 
         # Antwort speichern, Dialog bereinigen, Schrittzähler erhöhen -------
@@ -1776,11 +1826,11 @@ DlgFirewallConfig() {
     # -----------------------------------------------------------------------
     # Dialog: Firewall einrichten
     # -----------------------------------------------------------------------
-    LOG "${txTITLE00}${StepID}${txTITLE08}"
+    LOG "${txTITLE_00}${StepID}${txTITLE_08}"
     # Dialog Optionen anzeigen ----------------------------------------------
     SelectedPorts=$(dialog --output-fd 1\
       --backtitle "${APP_TITLE}" \
-      --title "${txTITLE00}${StepID}${txTITLE08}" \
+      --title "${txTITLE_00}${StepID}${txTITLE_08}" \
       --yes-label "${YES_LABEL}" \
       --cancel-label "${CANCEL_LABEL}" \
       --checklist "${txSTP_0801}${txSTP_0802}" \
@@ -1844,11 +1894,11 @@ DlgLoginProtection() {
     # -----------------------------------------------------------------------
     # Dialog: Absicherung Login mit Fail2ban einrichten
     # -----------------------------------------------------------------------
-    LOG "${txTITLE00}${StepID}${txTITLE09}"
+    LOG "${txTITLE_00}${StepID}${txTITLE_09}"
     # Dialog anzeigen -------------------------------------------------------
     LoginSelection=$(dialog --output-fd 1\
       --backtitle "${APP_TITLE}" \
-      --title "${txTITLE00}${StepID}${txTITLE09}" \
+      --title "${txTITLE_00}${StepID}${txTITLE_09}" \
       --yes-label "${YES_LABEL}" \
       --cancel-label "${CANCEL_LABEL}" \
       --checklist "${txSTP_0901}${txSTP_0002}" \
@@ -1875,49 +1925,6 @@ DlgLoginProtection() {
     StepID=$(expr $StepID + 1)
     return $res
 }
-DlgPromptSettings() {
-    # -----------------------------------------------------------------------
-    # Dialog: Bash Prompt anpassen (User-Auswahl)
-    # -----------------------------------------------------------------------
-    txPRART1401="\nMit einer Anpassung des Bash-Prompts können Sie wichtige Informationen wie Benutzername, Hostname und aktuelles Verzeichnis farbig und übersichtlich darstellen.\n\nFür welche Benutzer soll der farbige Prompt eingerichtet werden?\n(Mehrfachauswahl möglich mit Leertaste)"
-    txLOG_1401="Abbruch - Prompt-Anpassung nicht durchgeführt"
-    LOG "Schritt ${StepID}: Prompt-Anpassung Dialog gestartet"
-
-    # Alle User mit Home-Verzeichnis ermitteln
-    USERLIST=()
-    while IFS=: read -r name _ uid _ _ home _; do
-        if [ "$uid" -ge 1000 ] && [ -d "$home" ]; then
-            USERLIST+=("$name" "$home" "off")
-        fi
-    done < /etc/passwd
-
-    if [ ${#USERLIST[@]} -eq 0 ]; then
-        dialog --msgbox "Keine Benutzer mit Home-Verzeichnis gefunden!" 8 50
-        LOG "Keine Benutzer mit Home-Verzeichnis gefunden"
-        return 1
-    fi
-
-    SELECTED_USERS=$(dialog --backtitle "${APP_TITLE}" \
-        --title "Schritt ${StepID} - Bash Prompt anpassen >" \
-        --checklist "${txPRART1401}" 18 70 8 \
-        "${USERLIST[@]}" \
-        --output-fd 1)
-
-    dialog --clear
-
-    if [ -n "$SELECTED_USERS" ]; then
-        for user in $SELECTED_USERS; do
-            SetPromptForUser "$user"
-        done
-        res=0
-    else
-        LOG "${txLOG_1401}"
-        res=1
-    fi
-    clear
-    StepID=$(expr $StepID + 1)
-    return $res
-}
 
 # ===========================================================================
 # Hauptprogramm
@@ -1939,9 +1946,9 @@ STEP_OPTIONS=$(dialog --output-fd 1 \
   "ssh"         "SSH Login absichern" on \
   "firewall"    "Firewall einrichten" on \
   "loginprot"   "Login absichern (Fail2ban)" on \
-  "ddos"        "DDoS-Schutz" on \
-  "ipspoof"     "IP-Spoofing-Schutz" on \
-  "arpspoof"    "ARP-Spoofing-Schutz" on \
+  "ddos"        "DDoS-Schutz" off \
+  "ipspoof"     "IP-Spoofing-Schutz" off \
+  "arpspoof"    "ARP-Spoofing-Schutz" off \
   "prompt"      "Bash Prompt anpassen" on
 )
 dialog --clear
@@ -1958,11 +1965,11 @@ if [ $? -ne 0 ]; then exit; fi
 # ---------------------------------------------------------------------------
 # Dialog: Systemupdate einrichten
 if [[ $STEP_OPTIONS == *update* ]]; then
-    ShowYesNoDlg 10 62 "${txTITLE01}" "${txSTP_0101}" SetSystemUpDate
+    ShowYesNoDlg 10 62 "${txTITLE_01}" "${txSTP_0101}" SetSystemUpDate
 fi
 # Dialog: Automatisches Update einrichten
 if [[ $STEP_OPTIONS == *autoupdate* ]]; then
-    ShowYesNoDlg 10 56 "${txTITLE02}" "${txSTP_0201}" SetAutoUpdate
+    ShowYesNoDlg 10 56 "${txTITLE_02}" "${txSTP_0201}" SetAutoUpdate
 fi
 # Dialog: Software
 if [[ $STEP_OPTIONS == *software* ]]; then
@@ -1970,7 +1977,7 @@ if [[ $STEP_OPTIONS == *software* ]]; then
 fi
 # Dialog: Tastatur Layout anpassen
 if [[ $STEP_OPTIONS == *keyboard* ]]; then
-    ShowYesNoDlg 10 62 "${txTITLE04}" "${txSTP_0401}${txSTP_0001}" SetKeyboardLayout
+    ShowYesNoDlg 10 62 "${txTITLE_04}" "${txSTP_0401}${txSTP_0001}" SetKeyboardLayout
 fi
 # Dialog: Zeitzone / Timesever
 if [[ $STEP_OPTIONS == *timezone* ]]; then
@@ -1978,11 +1985,11 @@ if [[ $STEP_OPTIONS == *timezone* ]]; then
 fi
 # Dialog: Administativer Benutzer einrichten 
 if [[ $STEP_OPTIONS == *adminuser* ]]; then
-    ShowYesNoDlg 14 62 "${txTITLE06}" "${txSTP_0601}${txSTP_0602}$(GetAllUsers)\n${txSTP_0001}" SetAdminUser
+    ShowYesNoDlg 14 62 "${txTITLE_06}" "${txSTP_0601}${txSTP_0602}$(GetUserList withroot | cut -d: -f1)\n${txSTP_0001}" SetAdminUser
 fi
 # Dialog: Hostname setzen
 if [[ $STEP_OPTIONS == *hostname* ]]; then
-    ShowYesNoDlg 17 60 "${txTITLE10}" "${txSTP_1001}${txSTP_0001}" SetHostname
+    ShowYesNoDlg 17 60 "${txTITLE_10}" "${txSTP_1001}${txSTP_0001}" SetHostname
 fi
 # Dialog: SSH Login absichern
 if [[ $STEP_OPTIONS == *ssh* ]]; then
@@ -1998,19 +2005,19 @@ if [[ $STEP_OPTIONS == *loginprot* ]]; then
 fi
 # Dialog: Ddos Protection einrichten
 if [[ $STEP_OPTIONS == *ddos* ]]; then
-    ShowYesNoDlg 18 70 "${txTITLE11}" "${txSTP_1101}" SetDdosProtection
+    ShowYesNoDlg 18 70 "${txTITLE_11}" "${txSTP_1101}" SetDdosProtection
 fi
 # Dialog: IpSpoofing Protection einrichten
 if [[ $STEP_OPTIONS == *ipspoof* ]]; then
-    ShowYesNoDlg 18 70 "${txTITLE12}" "${txSTP_1201}" SetIpSpoofingProtection
+    ShowYesNoDlg 18 70 "${txTITLE_12}" "${txSTP_1201}" SetIpSpoofingProtection
 fi
 # Dialog: ArpSpoofing Protection einrichten
 if [[ $STEP_OPTIONS == *arpspoof* ]]; then
-    ShowYesNoDlg 15 62 "${txTITLE13}" "${txSTP_1301}" SetArpSpoofingProtection
+    ShowYesNoDlg 15 62 "${txTITLE_13}" "${txSTP_1301}" SetArpSpoofingProtection
 fi
 # Dialog: Bash Prompt anpassen
 if [[ $STEP_OPTIONS == *prompt* ]]; then
-    DlgPromptSettings
+    ShowYesNoDlg 15 62 "${txTITLE_14}" "${txSTP_1401}" SetPrompt
 fi
 # Bildschirm löschen --------------------------------------------------------
 clear
