@@ -791,7 +791,7 @@ SetAutoUpdate() {
             if [ $? -ne 0 ]; then
                 # Schreiben in temporäre Datei ----------------------------------
                 local TMP_FILE=$(mktemp /tmp/newmycron.XXXXXX)
-                crontab -l > ${TMP_FILE}
+                crontab -l 2>/dev/null > ${TMP_FILE}
                 # Neuen Eintrag anfügen -----------------------------------------
                 echo " " >> ${TMP_FILE}
                 echo "# --- BEGIN FirstRun ---" >> ${TMP_FILE}
@@ -957,7 +957,21 @@ SetAdminUser() {
             clear
             return 5
         fi
-
+        # Prüfen, ob der Benutzername gültig ist ----------------------------
+        if ! [[ "$USER_NAME" =~ ^[a-z_][a-z0-9_-]*$ ]]; then
+            dialog --msgbox "Ungültiger Benutzername!" 8 50
+            return 6
+        fi
+        # Prüfen, ob der Benutzername bereits existiert ---------------------
+        if id "$USER_NAME" &>/dev/null; then
+            dialog --msgbox "Benutzer existiert bereits!" 8 50
+            return 7
+        fi
+        # Prüfen, ob ein reservierter Benutzername verwendet wird -----------
+        if [[ "$USER_NAME" == "root" || "$USER_NAME" == "daemon" ]]; then
+            dialog --msgbox "Dieser Benutzername ist reserviert!" 8 50
+            return 8
+        fi
         # Fortschrittsdialog starten ----------------------------------------
         (
             # User anlegen --------------------------------------------------
@@ -1118,6 +1132,10 @@ SetSshLogin() {
                     echo "95" ; sleep 1 ;;
             esac
         done
+        if ! sshd -t; then
+            dialog --msgbox "Fehler in der SSH-Konfiguration!" 8 50
+            return 7
+        fi
         # Letzter Schritt
         echo "XXX" ; sleep 1 && echo "${txPART0716}"; echo "XXX"
         echo "100" ; sleep 2 
@@ -1513,13 +1531,27 @@ SetPrompt() {
     # -----------------------------------------------------------------------
     # Prompt-Anpassung systemweit und für alle neuen User vornehmen
     # -----------------------------------------------------------------------
+    # Prfung ob .bash.bashrc beschreibbar ist -------------------------------
+    if [ ! -w "/etc/bash.bashrc" ]; then
+        dialog --msgbox "Datei /etc/bash.bashrc ist nicht beschreibbar!" 8 50
+        return 1
+    fi
+    # Prfung ob .skel.bashrc beschreibbar ist -------------------------------
+    if [ ! -e "/etc/skel/.bashrc" ]; then
+        touch /etc/skel/.bashrc
+        chmod 644 /etc/skel/.bashrc
+    fi
+    if [ ! -w "/etc/skel/.bashrc" ]; then
+        dialog --msgbox "Datei /etc/skel/.bashrc ist nicht beschreibbar!" 8 50
+        return 1
+    fi
     local DIALOG=dialog
     # Dialog vorbereiten ----------------------------------------------------
     (
         echo "20"
         echo "XXX"; echo "$txPART1402"; echo "XXX"
         if [ -f "/etc/bash.bashrc" ]; then
-            if cp "/etc/bash.bashrc" "/etc/bash.bashrc.bak" 2>/dev/null; then
+            if cp "/etc/bash.bashrc" "/etc/bash.bashrc.bak.$(date +%F_%T)" 2>/dev/null; then
                 LOG "${txLOG_1402} (OK)"
             else
                 LOG "${txLOG_1402} (FEHLER)"
@@ -1680,6 +1712,7 @@ DlgRecommendedSoftware() {
     # -----------------------------------------------------------------------
     # Dialog: Empfohlene Software installieren
     # -----------------------------------------------------------------------
+    local res=1
     LOG "${txTITLE_00}${StepID}${txTITLE_03}"
     # Dialog anzeigen -------------------------------------------------------
     SelectedSoftware=$(dialog --output-fd 1\
@@ -1718,6 +1751,7 @@ DlgTimeZone() {
     # -----------------------------------------------------------------------
     # Dialog: Zeitzone und Synchronisation
     # -----------------------------------------------------------------------
+    local res=1
     LOG "${txTITLE_00}${StepID}${txTITLE_05}"
     # Dialog anzeigen -------------------------------------------------------
     # TODO: stdout anpassen
@@ -1753,6 +1787,7 @@ DlgSshLogin() {
     # -----------------------------------------------------------------------
     # Dialog: SSH Login absichern
     # -----------------------------------------------------------------------
+    local res=1
     LOG "${txTITLE_00}${StepID}${txTITLE_07}"
     # Dialog Optionen anzeigen ----------------------------------------------
     SSH_OPTIONS=$(dialog --output-fd 1\
@@ -1773,7 +1808,7 @@ DlgSshLogin() {
     then
         # Dialog User Auswahl vorbereiten -----------------------------------
         local userlist=$(GetUserList | cut -d: -f1)
-        local lstOptions=""
+        local lstOptions=()
         local lstHeight=12
         i=0
         for item in $userlist
@@ -1826,6 +1861,7 @@ DlgFirewallConfig() {
     # -----------------------------------------------------------------------
     # Dialog: Firewall einrichten
     # -----------------------------------------------------------------------
+    local res=1
     LOG "${txTITLE_00}${StepID}${txTITLE_08}"
     # Dialog Optionen anzeigen ----------------------------------------------
     SelectedPorts=$(dialog --output-fd 1\
@@ -1894,6 +1930,7 @@ DlgLoginProtection() {
     # -----------------------------------------------------------------------
     # Dialog: Absicherung Login mit Fail2ban einrichten
     # -----------------------------------------------------------------------
+    local res=1
     LOG "${txTITLE_00}${StepID}${txTITLE_09}"
     # Dialog anzeigen -------------------------------------------------------
     LoginSelection=$(dialog --output-fd 1\
