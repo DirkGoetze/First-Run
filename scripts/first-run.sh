@@ -1626,7 +1626,7 @@ ShowYesNoDlg() {
     # Whitelist für aufzurufende Funktionen ---------------------------------
     ALLOWED_CALLBACKS="SetSystemUpDate SetAutoUpdate SetKeyboardLayout \
         SetAdminUser SetLoginProtection SetHostname SetDdosProtection \
-        SetIpSpoofingProtection SetArpSpoofingProtection"
+        SetIpSpoofingProtection SetArpSpoofingProtection SetPrompt"
     if [[ ! " $ALLOWED_CALLBACKS " =~ " $lvCallbackFnk " ]]; then
         LOG "Nicht erlaubte Callback-Funktion: $lvCallbackFnk"
         return 3
